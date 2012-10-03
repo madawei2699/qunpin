@@ -55,6 +55,8 @@ class HomeHandler(tornado.web.RequestHandler):
 
 
 def main():
+    if config.DEBUG:
+        m.initDb()
     tornado.options.parse_command_line()
     application = Application()
     application.listen(options.port)

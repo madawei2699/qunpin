@@ -13,7 +13,7 @@ DEBUG = True
 # sqlalchemy 设置
 # dialect+driver://username:password@host:port/database?charset=encoding
 engine = create_engine(
-    "mysql+mysqldb://root:root1234@localhost:3306/mydb?charset=utf8",
+    "mysql+mysqldb://root:root1234@localhost:3306/qp_db?charset=utf8",
     encoding='utf8',
     echo=False,  # 是否在控制台输出SQL语句
 )
