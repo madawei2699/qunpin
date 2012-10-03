@@ -58,8 +58,6 @@ def main():
     if config.DEBUG:
         m.initDb()
     tornado.options.parse_command_line()
-    #http_server = tornado.httpserver.HTTPServer(Application())
-    #http_server.listen(options.port)
     application = Application()
     application.listen(options.port)
     tornado.ioloop.IOLoop.instance().start()
