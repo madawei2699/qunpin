@@ -1,4 +1,4 @@
 #coding:utf-8
 
 #dialect+driver://username:password@host:port/database
-DB_CONFIG="mysql+mysqldb://root:guibufa@localhost:3306/qunpin_dev"
+DB_CONFIG="mysql+mysqldb://用户名:密码@localhost:端口/数据库名"
