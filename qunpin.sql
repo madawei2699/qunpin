@@ -200,6 +200,7 @@ ENGINE = InnoDB
 COMMENT = '审核表，用来审核用户上传书籍';
 
 INSERT INTO `qp_db`.`buser` (`id`, `name`, `sex`, `mail`, `register_time`, `type`, `password`) VALUES ('0', 'god', '3', 'god@qunpin.net', '2012-10-3', '0', 'qunpin');
+INSERT INTO `qp_db`.`buser` (`id`, `name`, `sex`, `mail`, `register_time`, `type`, `password`) VALUES ('1', 'adm', '2', 'adm@qunpin.net', '2012-10-3', '0', 'qunpin');
 
 
 
