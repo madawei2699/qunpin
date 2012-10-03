@@ -9,17 +9,13 @@ import tornado.ioloop
 import tornado.web
 import tornado.options
 from tornado.options import define,options
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
 
 import models as  m
 import config # 数据库配置 以及其他配置
 
 define("port", default=8888, help="run on the given port", type=int)
 
-engine = create_engine(config.DB_CONFIG)
-Session = sessionmaker(bind=engine)
-db = Session()
+db = config.db
 
 
 
@@ -30,13 +26,13 @@ class Application(tornado.web.Application):
             (r"/", HomeHandler),
         ]
         settings = dict(
-            template_path=os.path.join(os.path.dirname(__file__), "templates"),
-            static_path=os.path.join(os.path.dirname(__file__), "static"),
+            template_path=config.template_path,
+            static_path=config.static_path,
+            debug=config.DEBUG,
             xsrf_cookies=True,
             cookie_secret="dev",
-        #    login_url="/admin/login",
             autoescape=None,
-            debug=config.DEBUG,
+        #    login_url="/admin/login",
         )
         tornado.web.Application.__init__(self, handlers, **settings)
 
