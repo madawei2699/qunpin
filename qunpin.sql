@@ -1,253 +1,206 @@
-DROP SCHEMA IF EXISTS `mydb` ;
-CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci ;
-USE `mydb` ;
+DROP SCHEMA IF EXISTS `qp_db` ;
+CREATE SCHEMA IF NOT EXISTS `qp_db` DEFAULT CHARACTER SET utf8 COLLATE utf8_swedish_ci ;
+USE `qp_db` ;
 
 -- -----------------------------------------------------
--- Table `mydb`.`fuser`
+-- Table `qp_db`.`book`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`fuser` ;
+DROP TABLE IF EXISTS `qp_db`.`book` ;
 
-CREATE  TABLE IF NOT EXISTS `mydb`.`fuser` (
-  `id` INT NOT NULL COMMENT 'ÓÃ»§±àºÅ' ,
-  `name` VARCHAR(45) NULL COMMENT 'ÓÃ»§Ãû' ,
-  `sex` INT NULL COMMENT '1-ÄÐ\\n2-Å®\\n3-ÆäËû' ,
-  `mail` VARCHAR(45) NULL COMMENT 'ÓÊ¼þ' ,
-  `register_time` TIMESTAMP NULL COMMENT '×¢²áÊ±¼ä' ,
-  `lock` TINYINT(1) NULL DEFAULT 0 COMMENT '0-·ñ\\n1-ÊÇ\\nÖ÷ÒªÊÇ·ÀÖ¹×¢²áÓÃ»§ÂÒÉÏ´«ÎÄ¼þ£¬Èç¹û·¢ÏÖ£¬¹ÜÀíÔ±¿ÉÒÔ°ÑÕâ¸öÓÃ»§Ëø×¡¡£' ,
-  PRIMARY KEY (`id`) )
-ENGINE = InnoDB
-COMMENT = 'Ç°Ì¨ÓÃ»§±í£¬¿ÉÒÔ×¢²á£¬ÉÏ´«£¬ÏÂÔØµç×ÓÊé';
-
-
--- -----------------------------------------------------
--- Table `mydb`.`book`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`book` ;
-
-CREATE  TABLE IF NOT EXISTS `mydb`.`book` (
-  `id` INT NOT NULL AUTO_INCREMENT COMMENT 'Êé±àºÅ' ,
-  `name` VARCHAR(45) NOT NULL COMMENT 'ÊéÃû' ,
-  `img` VARCHAR(100) NULL COMMENT 'ÓÃÀ´´æ·Å·âÃæµÄÂ·¾¶' ,
-  `create_time` TIMESTAMP NULL COMMENT '´´½¨Ê±¼ä' ,
-  `delete` TINYINT(1) NULL DEFAULT 1 COMMENT '0-³¹µ×É¾³ý£¬²¢ÇÒÉ¾³ýÏà¹ØµÄÀúÊ·°æ±¾Óë¸÷ÖÖ¸ñÊ½µÄµç×ÓÊé\\n1-²»É¾³ý' ,
-  `display` TINYINT(1) NULL DEFAULT 1 COMMENT '0-²»ÏÔÊ¾£¬ÏÂ¼Ü\\n1-ÏÔÊ¾£¬ÉÏ¼Ü' ,
-  `isbn` VARCHAR(45) NULL COMMENT 'isbnÐÅÏ¢' ,
-  `author` VARCHAR(45) NULL COMMENT '×÷Õß' ,
-  `type` INT NULL COMMENT 'µç×ÓÊéÀà±ð' ,
-  `tag` INT NULL COMMENT 'µç×ÓÊé±êÇ©' ,
-  `publish_time` TIMESTAMP NULL COMMENT '³ö°æÈÕÆÚ' ,
-  `publisher` VARCHAR(45) NULL COMMENT '³ö°æÉç' ,
-  `upload` VARCHAR(45) NULL COMMENT 'µç×ÓÊéÉÏ´«ºó´æ·ÅµÄÎ»ÖÃ' ,
-  `review` INT NULL DEFAULT 0 COMMENT 'ÉóºË½á¹û\\n0-Î´ÉóºË\\n1-ÉóºËÍ¨¹ý\\n2-ÉóºËÎ´Í¨¹ý\\nÒ»±¾ÊéÊÇ·ñÉÏ¼Ü£¬È¡¾öÓëÉóºË½á¹û£¬ÏÔÊ¾£¬É¾³ýÈý¸öÖµ¡£µ±ÉóºËÍ¨¹ý²¢ÇÒÏÔÊ¾ÎªÕæ£¬É¾³ýÎª¼ÙÊ±£¬¸Ã±¾Êé²ÅÉÏ¼Ü£¬²ÅÄÜÔÚÒ³ÃæÀï¿´µ½£¬²ÅÄÜÔÚËÑË÷½á¹ûÖÐ²éµ½¡£' ,
-  `fuser_id` INT NULL COMMENT 'ÉÏ´«Õß±àºÅ' ,
+CREATE  TABLE IF NOT EXISTS `qp_db`.`book` (
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT 'ä¹¦ç¼–å·' ,
+  `name` VARCHAR(45) NOT NULL COMMENT 'ä¹¦å' ,
+  `img` VARCHAR(100) NULL COMMENT 'ç”¨æ¥å­˜æ”¾å°é¢çš„è·¯å¾„' ,
+  `create_time` TIMESTAMP NULL COMMENT 'åˆ›å»ºæ—¶é—´' ,
+  `delete` TINYINT(1) NULL DEFAULT 1 COMMENT '0-å½»åº•åˆ é™¤ï¼Œå¹¶ä¸”åˆ é™¤ç›¸å…³çš„åŽ†å²ç‰ˆæœ¬ä¸Žå„ç§æ ¼å¼çš„ç”µå­ä¹¦\\n1-ä¸åˆ é™¤' ,
+  `display` TINYINT(1) NULL DEFAULT 1 COMMENT '0-ä¸æ˜¾ç¤ºï¼Œä¸‹æž¶\\n1-æ˜¾ç¤ºï¼Œä¸Šæž¶' ,
+  `isbn` VARCHAR(45) NULL COMMENT 'isbnä¿¡æ¯' ,
+  `author` VARCHAR(45) NULL COMMENT 'ä½œè€…' ,
+  `type` INT NULL COMMENT 'ç”µå­ä¹¦ç±»åˆ«' ,
+  `tag` INT NULL COMMENT 'ç”µå­ä¹¦æ ‡ç­¾' ,
+  `publish_time` TIMESTAMP NULL COMMENT 'å‡ºç‰ˆæ—¥æœŸ' ,
+  `publisher` VARCHAR(45) NULL COMMENT 'å‡ºç‰ˆç¤¾' ,
+  `upload` VARCHAR(45) NULL COMMENT 'ç”µå­ä¹¦ä¸Šä¼ åŽå­˜æ”¾çš„ä½ç½®' ,
+  `review` INT NULL DEFAULT 0 COMMENT 'å®¡æ ¸ç»“æžœ\\n0-æœªå®¡æ ¸\\n1-å®¡æ ¸é€šè¿‡\\n2-å®¡æ ¸æœªé€šè¿‡\\nä¸€æœ¬ä¹¦æ˜¯å¦ä¸Šæž¶ï¼Œå–å†³ä¸Žå®¡æ ¸ç»“æžœï¼Œæ˜¾ç¤ºï¼Œåˆ é™¤ä¸‰ä¸ªå€¼ã€‚å½“å®¡æ ¸é€šè¿‡å¹¶ä¸”æ˜¾ç¤ºä¸ºçœŸï¼Œåˆ é™¤ä¸ºå‡æ—¶ï¼Œè¯¥æœ¬ä¹¦æ‰ä¸Šæž¶ï¼Œæ‰èƒ½åœ¨é¡µé¢é‡Œçœ‹åˆ°ï¼Œæ‰èƒ½åœ¨æœç´¢ç»“æžœä¸­æŸ¥åˆ°ã€‚' ,
+  `fuser_id` INT NULL COMMENT 'ä¸Šä¼ è€…ç¼–å·' ,
+  `lock` TINYINT(1) NULL COMMENT 'æ˜¯å¦é”å®šï¼š\\n0-å¦\\n1-æ˜¯\\nå½“ä¸€ä¸ªç”µå­ä¹¦ï¼Œæˆ‘ä»¬è®¤ä¸ºå®ƒå·²ç»æ²¡æœ‰é”™å­—ï¼ŒæŽ’ç‰ˆä¹Ÿä¸éœ€è¦ä¿®æ”¹ï¼Œä¸ºäº†èŠ‚çœæœåŠ¡å™¨èµ„æºï¼Œå°†å®ƒé”å®šï¼Œè¢«é”å®šçš„ç”µå­ä¹¦ä¸å¯è¢«ç¼–è¾‘ã€‚' ,
   PRIMARY KEY (`id`) ,
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) ,
-  CONSTRAINT `fk_book_fuser1`
-    FOREIGN KEY (`fuser_id` )
-    REFERENCES `mydb`.`fuser` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) )
 ENGINE = InnoDB
-COMMENT = '¸Ã±íÓÃÀ´´æ·Åµç×ÓÊéµÄ»ù±¾ÐÅÏ¢';
+COMMENT = 'è¯¥è¡¨ç”¨æ¥å­˜æ”¾ç”µå­ä¹¦çš„åŸºæœ¬ä¿¡æ¯';
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`location`
+-- Table `qp_db`.`location`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`location` ;
+DROP TABLE IF EXISTS `qp_db`.`location` ;
 
-CREATE  TABLE IF NOT EXISTS `mydb`.`location` (
+CREATE  TABLE IF NOT EXISTS `qp_db`.`location` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `booknum` INT NOT NULL COMMENT 'µç×ÓÊé±àºÅ' ,
-  `location` VARCHAR(100) NULL COMMENT 'µç×ÓÊéÏÂÔØÂ·¾¶' ,
+  `booknum` INT NOT NULL COMMENT 'ç”µå­ä¹¦ç¼–å·' ,
+  `location` VARCHAR(100) NULL COMMENT 'ç”µå­ä¹¦ä¸‹è½½è·¯å¾„' ,
   `type` INT NULL COMMENT '0-epub\\n1-mobi' ,
   PRIMARY KEY (`id`) ,
-  INDEX `booknum_idx` (`id` ASC) ,
-  CONSTRAINT `booknum`
-    FOREIGN KEY (`id` )
-    REFERENCES `mydb`.`book` (`id` )
+  INDEX `booknum_idx` (`booknum` ASC) ,
+  CONSTRAINT `l_booknum`
+    FOREIGN KEY (`booknum` )
+    REFERENCES `qp_db`.`book` (`id` )
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-COMMENT = '¸Ã±í´æ·ÅÃ¿¸öµç×ÓÊéµÄÏÂÔØÂ·¾¶';
+COMMENT = 'è¯¥è¡¨å­˜æ”¾æ¯ä¸ªç”µå­ä¹¦çš„ä¸‹è½½è·¯å¾„';
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`history`
+-- Table `qp_db`.`buser`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`history` ;
+DROP TABLE IF EXISTS `qp_db`.`buser` ;
 
-CREATE  TABLE IF NOT EXISTS `mydb`.`history` (
-  `id` INT NOT NULL AUTO_INCREMENT COMMENT 'ÀúÊ·°æ±¾±àºÅ' ,
-  `booknum` INT NULL COMMENT 'Êé±àºÅ' ,
-  `location` VARCHAR(100) NULL COMMENT 'ÀúÊ·°æ±¾´æ·ÅÎ»ÖÃ' ,
-  `create_time` TIMESTAMP NULL COMMENT '´´½¨Ê±¼ä' ,
-  PRIMARY KEY (`id`) ,
-  INDEX `booknum_idx` (`id` ASC) ,
-  CONSTRAINT `booknum`
-    FOREIGN KEY (`id` )
-    REFERENCES `mydb`.`book` (`id` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB
-COMMENT = 'ÓÃÀ´´æ·Åµç×ÓÊéµÄÀúÊ·°æ±¾ÐÅÏ¢';
-
-
--- -----------------------------------------------------
--- Table `mydb`.`buser`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`buser` ;
-
-CREATE  TABLE IF NOT EXISTS `mydb`.`buser` (
-  `id` INT NOT NULL COMMENT 'ÓÃ»§±àºÅ' ,
-  `name` VARCHAR(45) NULL COMMENT 'ÓÃ»§Ãû' ,
-  `sex` INT NULL COMMENT '1-ÄÐ\\n2-Å®\\n3-ÆäËû' ,
-  `mail` VARCHAR(45) NULL COMMENT 'ÓÊ¼þ' ,
-  `register_time` TIMESTAMP NULL COMMENT '×¢²áÊ±¼ä' ,
-  `type` INT NULL COMMENT '¹ÜÀíÔ±ÀàÐÍ\\n0-³¬¼¶¹ÜÀíÔ±£¨ÏµÍ³³õÊ¼»¯Ê±½¨Á¢£¬Ö»ÓÐÒ»¸ö£¬¿ÉÒÔ¹ÜÀíÆäËû¹ÜÀíÔ±£©\\n1-¹ÜÀíÔ±\\n' ,
+CREATE  TABLE IF NOT EXISTS `qp_db`.`buser` (
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT 'ç”¨æˆ·ç¼–å·' ,
+  `name` VARCHAR(45) NOT NULL COMMENT 'ç”¨æˆ·å' ,
+  `sex` INT NULL COMMENT '1-ç”·\\n2-å¥³\\n3-å…¶ä»–' ,
+  `mail` VARCHAR(45) NOT NULL COMMENT 'é‚®ä»¶' ,
+  `register_time` TIMESTAMP NULL COMMENT 'æ³¨å†Œæ—¶é—´' ,
+  `type` INT NULL COMMENT 'ç®¡ç†å‘˜ç±»åž‹\\n0-è¶…çº§ç®¡ç†å‘˜ï¼ˆç³»ç»Ÿåˆå§‹åŒ–æ—¶å»ºç«‹ï¼Œåªæœ‰ä¸€ä¸ªï¼Œå¯ä»¥ç®¡ç†å…¶ä»–ç®¡ç†å‘˜ï¼‰\\n1-ç®¡ç†å‘˜\\n' ,
+  `password` VARCHAR(45) NOT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB
-COMMENT = 'ºóÌ¨ÓÃ»§±í£¬¹ÜÀíÈËÔ±µÇÂ¼µÄ¡£';
+COMMENT = 'åŽå°ç”¨æˆ·è¡¨ï¼Œç®¡ç†äººå‘˜ç™»å½•çš„ã€‚';
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`tag`
+-- Table `qp_db`.`fuser`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`tag` ;
+DROP TABLE IF EXISTS `qp_db`.`fuser` ;
 
-CREATE  TABLE IF NOT EXISTS `mydb`.`tag` (
+CREATE  TABLE IF NOT EXISTS `qp_db`.`fuser` (
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT 'ç”¨æˆ·ç¼–å·' ,
+  `name` VARCHAR(45) NOT NULL COMMENT 'ç”¨æˆ·å' ,
+  `sex` INT NULL COMMENT '1-ç”·\\n2-å¥³\\n3-å…¶ä»–' ,
+  `mail` VARCHAR(45) NOT NULL COMMENT 'é‚®ä»¶' ,
+  `register_time` TIMESTAMP NULL COMMENT 'æ³¨å†Œæ—¶é—´' ,
+  `lock` TINYINT(1) NULL DEFAULT 0 COMMENT '0-å¦\\n1-æ˜¯\\nä¸»è¦æ˜¯é˜²æ­¢æ³¨å†Œç”¨æˆ·ä¹±ä¸Šä¼ æ–‡ä»¶ï¼Œå¦‚æžœå‘çŽ°ï¼Œç®¡ç†å‘˜å¯ä»¥æŠŠè¿™ä¸ªç”¨æˆ·é”ä½ã€‚' ,
+  `password` VARCHAR(45) NOT NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB
+COMMENT = 'å‰å°ç”¨æˆ·è¡¨ï¼Œå¯ä»¥æ³¨å†Œï¼Œä¸Šä¼ ï¼Œä¸‹è½½ç”µå­ä¹¦';
+
+
+-- -----------------------------------------------------
+-- Table `qp_db`.`tag`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `qp_db`.`tag` ;
+
+CREATE  TABLE IF NOT EXISTS `qp_db`.`tag` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `booknum` INT NULL COMMENT 'µç×ÓÊé±àºÅ' ,
-  `name` VARCHAR(45) NULL COMMENT '±êÇ©Ãû' ,
-  PRIMARY KEY (`id`) ,
-  INDEX `booknum_idx` (`id` ASC) ,
-  CONSTRAINT `booknum`
-    FOREIGN KEY (`id` )
-    REFERENCES `mydb`.`book` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-COMMENT = '±êÇ©±í';
-
-
--- -----------------------------------------------------
--- Table `mydb`.`type`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`type` ;
-
-CREATE  TABLE IF NOT EXISTS `mydb`.`type` (
-  `id` INT NOT NULL AUTO_INCREMENT COMMENT '±êÇ©ºÅ' ,
-  `booknum` INT NULL COMMENT 'µç×ÓÊé±àºÅ' ,
-  `name` VARCHAR(45) NULL COMMENT '·ÖÀàÃû' ,
-  PRIMARY KEY (`id`) ,
-  INDEX `booknum_idx` (`id` ASC) ,
-  CONSTRAINT `booknum`
-    FOREIGN KEY (`id` )
-    REFERENCES `mydb`.`book` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-COMMENT = '·ÖÀà±í';
-
-
--- -----------------------------------------------------
--- Table `mydb`.`fuser_book`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`fuser_book` ;
-
-CREATE  TABLE IF NOT EXISTS `mydb`.`fuser_book` (
-  `id` INT NOT NULL ,
-  `user_id` INT NOT NULL ,
-  `booknum` INT NULL ,
-  `d_time` TIMESTAMP NULL COMMENT 'ÏÂÔØÊ±¼ä' ,
-  `d_type` INT NULL COMMENT 'ÏÂÔØ¸ñÊ½' ,
+  `booknum` INT NULL COMMENT 'ç”µå­ä¹¦ç¼–å·' ,
+  `name` VARCHAR(45) NULL COMMENT 'æ ‡ç­¾å' ,
   PRIMARY KEY (`id`) ,
   INDEX `booknum_idx` (`booknum` ASC) ,
-  INDEX `id_idx` (`user_id` ASC) ,
-  CONSTRAINT `booknum`
+  CONSTRAINT `tag_booknum`
     FOREIGN KEY (`booknum` )
-    REFERENCES `mydb`.`book` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `id`
-    FOREIGN KEY (`user_id` )
-    REFERENCES `mydb`.`fuser` (`id` )
+    REFERENCES `qp_db`.`book` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-COMMENT = '¼ÇÂ¼ÓÃ»§ÏÂÔØµç×ÓÊéµÄÐÅÏ¢';
+COMMENT = 'æ ‡ç­¾è¡¨';
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`log`
+-- Table `qp_db`.`type`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`log` ;
+DROP TABLE IF EXISTS `qp_db`.`type` ;
 
-CREATE  TABLE IF NOT EXISTS `mydb`.`log` (
-  `id` INT NOT NULL ,
-  `booknum` INT NULL COMMENT 'µç×ÓÊé±àºÅ' ,
+CREATE  TABLE IF NOT EXISTS `qp_db`.`type` (
+  `id` INT NOT NULL AUTO_INCREMENT COMMENT 'æ ‡ç­¾å·' ,
+  `booknum` INT NULL COMMENT 'ç”µå­ä¹¦ç¼–å·' ,
+  `name` VARCHAR(45) NULL COMMENT 'åˆ†ç±»å' ,
+  `typecol` VARCHAR(45) NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `booknum_idx` (`booknum` ASC) ,
+  CONSTRAINT `type_booknum`
+    FOREIGN KEY (`booknum` )
+    REFERENCES `qp_db`.`book` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+COMMENT = 'åˆ†ç±»è¡¨';
+
+
+-- -----------------------------------------------------
+-- Table `qp_db`.`log`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `qp_db`.`log` ;
+
+CREATE  TABLE IF NOT EXISTS `qp_db`.`log` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `booknum` INT NULL COMMENT 'ç”µå­ä¹¦ç¼–å·' ,
   `fuser_id` INT NULL ,
-  `type` INT NULL COMMENT '²Ù×÷ÀàÐÍ£º\\n1-Ôö\\n2-É¾\\n3-¸Ä£¬ÈçËø×¡ÓÃ»§£¬»òÕßÉÏ¼Ü£¬ÏÂ¼ÜÒ»±¾Êé¡£' ,
-  `operate_time` TIMESTAMP NULL COMMENT '²Ù×÷Ê±¼ä£¬¼ÇÂ¼¹ÜÀíÔ±¶ÔÏà¹ØÊé¼®ºÍÓÃ»§µÄ²Ù×÷Ê±¼ä¡£' ,
-  `operate_type` TINYINT(1) NULL COMMENT '²Ù×÷ÀàÐÍ\\n0-ÓÃ»§\\n1-µç×ÓÊé\\nÓÃÀ´¼ÇÂ¼¹ÜÀíÔ±¶Ôµç×ÓÊéºÍÓÃ»§µÄ²Ù×÷¡£' ,
-  `buser_id` INT NULL COMMENT '¹ÜÀíÔ±±àºÅ' ,
+  `type` INT NULL COMMENT 'æ“ä½œç±»åž‹ï¼š\\n1-å¢ž\\n2-åˆ \\n3-æ”¹ï¼Œå¦‚é”ä½ç”¨æˆ·ï¼Œæˆ–è€…ä¸Šæž¶ï¼Œä¸‹æž¶ä¸€æœ¬ä¹¦ã€‚' ,
+  `operate_time` TIMESTAMP NULL COMMENT 'æ“ä½œæ—¶é—´ï¼Œè®°å½•ç®¡ç†å‘˜å¯¹ç›¸å…³ä¹¦ç±å’Œç”¨æˆ·çš„æ“ä½œæ—¶é—´ã€‚' ,
+  `operate_type` TINYINT(1) NULL COMMENT 'æ“ä½œç±»åž‹\\n0-ç”¨æˆ·\\n1-ç”µå­ä¹¦\\nç”¨æ¥è®°å½•ç®¡ç†å‘˜å¯¹ç”µå­ä¹¦å’Œç”¨æˆ·çš„æ“ä½œã€‚' ,
+  `buser_id` INT NULL COMMENT 'ç®¡ç†å‘˜ç¼–å·' ,
   `logcol` VARCHAR(45) NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `booknum_idx` (`booknum` ASC) ,
   INDEX `user_id_idx` (`fuser_id` ASC) ,
   INDEX `buser_id_idx` (`buser_id` ASC) ,
-  CONSTRAINT `booknum`
+  CONSTRAINT `log_booknum`
     FOREIGN KEY (`booknum` )
-    REFERENCES `mydb`.`book` (`id` )
+    REFERENCES `qp_db`.`book` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fuser_id`
+  CONSTRAINT `log_fuser_id`
     FOREIGN KEY (`fuser_id` )
-    REFERENCES `mydb`.`fuser` (`id` )
+    REFERENCES `qp_db`.`fuser` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `buser_id`
+  CONSTRAINT `log_buser_id`
     FOREIGN KEY (`buser_id` )
-    REFERENCES `mydb`.`buser` (`id` )
+    REFERENCES `qp_db`.`buser` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-COMMENT = '¼ÇÂ¼ºóÌ¨¹ÜÀíÔ±²Ù×÷ÈÕÖ¾£¬Ö÷ÒªÊÇ¼ÇÂ¼¹ÜÀíÔ±¶ÔÓÃ»§Óëµç×ÓÊéµÄ¹ÜÀí²Ù×÷¡£';
+COMMENT = 'è®°å½•åŽå°ç®¡ç†å‘˜æ“ä½œæ—¥å¿—ï¼Œä¸»è¦æ˜¯è®°å½•ç®¡ç†å‘˜å¯¹ç”¨æˆ·ä¸Žç”µå­ä¹¦çš„ç®¡ç†æ“ä½œã€‚';
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`review`
+-- Table `qp_db`.`review`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `mydb`.`review` ;
+DROP TABLE IF EXISTS `qp_db`.`review` ;
 
-CREATE  TABLE IF NOT EXISTS `mydb`.`review` (
+CREATE  TABLE IF NOT EXISTS `qp_db`.`review` (
   `id` INT NOT NULL ,
-  `booknum` INT NULL COMMENT 'µç×ÓÊé±àºÅ' ,
-  `buser_id` INT NULL COMMENT 'ÓÃ»§±àºÅ' ,
-  `fuser_id` INT NULL COMMENT '¹ÜÀíÔ±±àºÅ' ,
-  `review` INT NULL DEFAULT 0 COMMENT '0-Î´ÉóºË\\n1-ÉóºËÍ¨¹ý\\n2-ÉóºËÎ´Í¨¹ý' ,
-  `reason` VARCHAR(500) NULL COMMENT 'ÉóºË²»Í¨¹ýÀíÓÉ¡£' ,
+  `booknum` INT NULL COMMENT 'ç”µå­ä¹¦ç¼–å·' ,
+  `buser_id` INT NULL COMMENT 'ç”¨æˆ·ç¼–å·' ,
+  `fuser_id` INT NULL COMMENT 'ç®¡ç†å‘˜ç¼–å·' ,
+  `review` INT NULL DEFAULT 0 COMMENT '0-æœªå®¡æ ¸\\n1-å®¡æ ¸é€šè¿‡\\n2-å®¡æ ¸æœªé€šè¿‡' ,
+  `reason` VARCHAR(500) NULL COMMENT 'å®¡æ ¸ä¸é€šè¿‡ç†ç”±ã€‚' ,
   PRIMARY KEY (`id`) ,
   INDEX `booknum_idx` (`booknum` ASC) ,
   INDEX `fuser_id_idx` (`fuser_id` ASC) ,
   INDEX `buser_id_idx` (`buser_id` ASC) ,
-  CONSTRAINT `booknum`
+  CONSTRAINT `r_booknum`
     FOREIGN KEY (`booknum` )
-    REFERENCES `mydb`.`book` (`id` )
+    REFERENCES `qp_db`.`book` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fuser_id`
+  CONSTRAINT `r_fuser_id`
     FOREIGN KEY (`fuser_id` )
-    REFERENCES `mydb`.`fuser` (`id` )
+    REFERENCES `qp_db`.`fuser` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `buser_id`
+  CONSTRAINT `r_buser_id`
     FOREIGN KEY (`buser_id` )
-    REFERENCES `mydb`.`buser` (`id` )
+    REFERENCES `qp_db`.`buser` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-COMMENT = 'ÉóºË±í£¬ÓÃÀ´ÉóºËÓÃ»§ÉÏ´«Êé¼®';
+COMMENT = 'å®¡æ ¸è¡¨ï¼Œç”¨æ¥å®¡æ ¸ç”¨æˆ·ä¸Šä¼ ä¹¦ç±';
+
+INSERT INTO `qp_db`.`buser` (`id`, `name`, `sex`, `mail`, `register_time`, `type`, `password`) VALUES ('0', 'god', '3', 'god@qunpin.net', '2012-10-3', '0', 'qunpin');
+
 
 
 
