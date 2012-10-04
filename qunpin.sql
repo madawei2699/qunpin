@@ -1,6 +1,7 @@
-DROP SCHEMA IF EXISTS `qp_db` ;
-CREATE SCHEMA IF NOT EXISTS `qp_db` DEFAULT CHARACTER SET utf8 COLLATE utf8_swedish_ci ;
-USE `qp_db` ;
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
 
 -- -----------------------------------------------------
 -- Table `qp_db`.`book`
@@ -64,6 +65,7 @@ CREATE  TABLE IF NOT EXISTS `qp_db`.`buser` (
   `register_time` TIMESTAMP NULL COMMENT '注册时间' ,
   `type` INT NULL COMMENT '管理员类型\\n0-超级管理员（系统初始化时建立，只有一个，可以管理其他管理员）\\n1-管理员\\n' ,
   `password` VARCHAR(45) NOT NULL ,
+  `salt` VARCHAR(45) NULL COMMENT '随机数，用来增强安全' ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB
 COMMENT = '后台用户表，管理人员登录的。';
@@ -82,6 +84,7 @@ CREATE  TABLE IF NOT EXISTS `qp_db`.`fuser` (
   `register_time` TIMESTAMP NULL COMMENT '注册时间' ,
   `lock` TINYINT(1) NULL DEFAULT 0 COMMENT '0-否\\n1-是\\n主要是防止注册用户乱上传文件，如果发现，管理员可以把这个用户锁住。' ,
   `password` VARCHAR(45) NOT NULL ,
+  `salt` VARCHAR(45) NULL COMMENT '随机数，用来增强安全' ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB
 COMMENT = '前台用户表，可以注册，上传，下载电子书';
@@ -101,8 +104,8 @@ CREATE  TABLE IF NOT EXISTS `qp_db`.`tag` (
   CONSTRAINT `tag_booknum`
     FOREIGN KEY (`booknum` )
     REFERENCES `qp_db`.`book` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 COMMENT = '标签表';
 
@@ -122,8 +125,8 @@ CREATE  TABLE IF NOT EXISTS `qp_db`.`type` (
   CONSTRAINT `type_booknum`
     FOREIGN KEY (`booknum` )
     REFERENCES `qp_db`.`book` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 COMMENT = '分类表';
 
@@ -149,18 +152,18 @@ CREATE  TABLE IF NOT EXISTS `qp_db`.`log` (
   CONSTRAINT `log_booknum`
     FOREIGN KEY (`booknum` )
     REFERENCES `qp_db`.`book` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `log_fuser_id`
     FOREIGN KEY (`fuser_id` )
     REFERENCES `qp_db`.`fuser` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `log_buser_id`
     FOREIGN KEY (`buser_id` )
     REFERENCES `qp_db`.`buser` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 COMMENT = '记录后台管理员操作日志，主要是记录管理员对用户与电子书的管理操作。';
 
@@ -184,24 +187,25 @@ CREATE  TABLE IF NOT EXISTS `qp_db`.`review` (
   CONSTRAINT `r_booknum`
     FOREIGN KEY (`booknum` )
     REFERENCES `qp_db`.`book` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `r_fuser_id`
     FOREIGN KEY (`fuser_id` )
     REFERENCES `qp_db`.`fuser` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `r_buser_id`
     FOREIGN KEY (`buser_id` )
     REFERENCES `qp_db`.`buser` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 COMMENT = '审核表，用来审核用户上传书籍';
 
-INSERT INTO `qp_db`.`buser` (`id`, `name`, `sex`, `mail`, `register_time`, `type`, `password`) VALUES ('0', 'god', '3', 'god@qunpin.net', '2012-10-3', '0', 'qunpin');
-INSERT INTO `qp_db`.`buser` (`id`, `name`, `sex`, `mail`, `register_time`, `type`, `password`) VALUES ('1', 'adm', '2', 'adm@qunpin.net', '2012-10-3', '0', 'qunpin');
+-- 初始化系统数据
+INSERT INTO `qp_db`.`buser` (`id`, `mail`, `name`, `password`, `register_time`, `salt`, `sex`, `type`) VALUES ('0', 'god@qunpin.net', 'god', '7dc2db42102088fe4e26fb09a54b4318', '2012-10-04', '12039d6dd9a7e27622301e935b6eefc78846802e', '3', '0');
 
 
-
-
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
