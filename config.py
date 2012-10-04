@@ -5,7 +5,7 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 
-import template
+#import template
 
 # 是否开启调试模式, 生产环境中, 请设为False
 DEBUG = True
@@ -31,10 +31,10 @@ template_path = os.path.join(app_root, "templates")
 
 
 # jinja2模板设置
-render = template.render(
-    template_path,
-    encoding='utf-8',
-)
+#render = template.render(
+#    template_path,
+#    encoding='utf-8',
+#)
 
 
 
