@@ -17,6 +17,7 @@ import config # 数据库配置 以及其他配置
 define("port", default=8888, help="run on the given port", type=int)
 
 db = config.db
+render = config.render
 
 
 class Application(tornado.web.Application):
@@ -77,7 +78,7 @@ class BaseHandler(tornado.web.RequestHandler):
 class HomeHandler(BaseHandler):
     def get(self):
         users = db.query(m.User).all()
-        self.render("dev_home.html",users=users)
+        self.write(render.dev_home(users=users))
 
 class LoginHandler(BaseHandler):
     def get(self):

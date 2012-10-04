@@ -5,6 +5,8 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 
+import template
+
 # 是否开启调试模式, 生产环境中, 请设为False
 DEBUG = True
 
@@ -21,11 +23,18 @@ db = scoped_session(sessionmaker(bind=engine))
 
 
 
-# jinja2模板设置
-
-
-
 # 静态文件设置
 app_root = os.path.dirname(__file__)
 static_path = os.path.join(app_root, "static")
 template_path = os.path.join(app_root, "templates")
+
+
+
+# jinja2模板设置
+render = template.render(
+    template_path,
+    encoding='utf-8',
+)
+
+
+

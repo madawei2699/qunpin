@@ -7,6 +7,7 @@
   <body>
 
     <div>
+<<<<<<< HEAD
       <ul>
         <li><a href="/">主页</a></li>
         <li><a href="/register">注册</a></li>
@@ -14,12 +15,24 @@
         <li><a href="/login">登录</a></li>
         <li><a href="/logout">登出</a></li>
       </ul>
+=======
+      <form action="/" method="post">
+        <input type="text" name="name" />
+        {#{{ xsrf_form_html() }}#}
+        <input type="submit" value="submit"/>
+      </form>
+>>>>>>> 532bf733d821bdaeb4ddc4d8c9b99a454e0b27e3
     </div>
     <hr>
     <div>
       {% for u in users %}
+<<<<<<< HEAD
       <p>{{u.username}}</p>
       {% end %}
+=======
+      <p>{{u.name}}</p>
+      {% endfor %}
+>>>>>>> 532bf733d821bdaeb4ddc4d8c9b99a454e0b27e3
     </div>
   </body>
 </html>
