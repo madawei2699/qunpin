@@ -15,7 +15,7 @@ DEBUG = True
 engine = create_engine(
     "mysql+mysqldb://root:root1234@localhost:3306/qp_db?charset=utf8",
     encoding='utf8',
-    echo=False,  # 是否在控制台输出SQL语句
+    echo=True,  # 是否在控制台输出SQL语句
 )
 db = scoped_session(sessionmaker(bind=engine))
 

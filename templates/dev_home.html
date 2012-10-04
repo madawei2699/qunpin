@@ -7,16 +7,18 @@
   <body>
 
     <div>
-      <form action="/" method="post">
-        <input type="text" name="name" />
-        {{ xsrf_form_html() }}
-        <input type="submit" value="submit"/>
-      </form>
+      <ul>
+        <li><a href="/">主页</a></li>
+        <li><a href="/register">注册</a></li>
+        <li><a href="/account">账户</a></li>
+        <li><a href="/login">登录</a></li>
+        <li><a href="/logout">登出</a></li>
+      </ul>
     </div>
     <hr>
     <div>
       {% for u in users %}
-      <p>{{u.name}}</p>
+      <p>{{u.username}}</p>
       {% end %}
     </div>
   </body>

@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html lang="zh-cn">
+  <head>
+    <meta charset="UTF-8">
+    <title>qunpin_register_dev</title>
+  </head>
+  <body>
+    <div>
+      <form action="/register" method="post">
+        <div>
+          <input type="text" name="username" placeholder="用户名" value="{{form['username']}}">
+          {%if form_error_message and form_error_message.get('username','')%}
+          <span>{{form_error_message['username']}}</span>
+          {%end%}
+        </div>
+        <div>
+          <input type="email" name="email" placeholder="邮箱" value="{{form['email']}}"/>
+          {%if form_error_message and form_error_message.get('email','')%}
+          <span>{{form_error_message['email']}}</span>
+          {%end%}
+        </div>
+        <div>
+          <input type="password" name="password_1" />
+        </div>
+          {%if form_error_message and form_error_message.get('password_1','')%}
+          <span>{{form_error_message['password_1']}}</span>
+          {%end%}
+        <div>
+          <input type="password" name="password_2" />
+          {%if form_error_message and form_error_message.get('password_2','')%}
+          <span>{{form_error_message['password_2']}}</span>
+          {%end%}
+        </div>
+
+        {%if form_error_message and form_error_message.get('form','')%}
+        <div>
+          <span>{{form_error_message['form']}}</span>
+        </div>
+        {%end%}
+
+        {{{ xsrf_form_html() }}
+        <div>
+          <input type="submit" value="注册"/>
+        </div>
+      </form>
+    </div>  
+  </body>
+</html>
