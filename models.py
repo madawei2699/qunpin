@@ -1,20 +1,23 @@
 #coding:utf-8
 
+# buildin import
+from random import random
+from md5 import md5
+from datetime import datetime
+
+# third import
 import sqlalchemy as sa
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-
 
 #http://docs.sqlalchemy.org/en/rel_0_7/core/expression_api.html#sqlalchemy.sql.expression.text
 from sqlalchemy.sql.expression import text
 
 #from sqlalchemy import Column, Integer, String
 
+# local import
 import config
-from random import random
-from md5 import md5
-from datetime import datetime
 
 
 BaseModel = declarative_base()

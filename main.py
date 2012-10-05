@@ -17,7 +17,6 @@ import config # 数据库配置 以及其他配置
 define("port", default=8888, help="run on the given port", type=int)
 
 db = config.db
-#render = config.render
 
 
 class Application(tornado.web.Application):
@@ -29,16 +28,7 @@ class Application(tornado.web.Application):
             (r"/register", RegisterHandler),
             (r"/account", UserConsoleHandler),
         ]
-        settings = dict(
-            template_path=config.template_path,
-            static_path=config.static_path,
-            debug=config.DEBUG,
-            xsrf_cookies=True,
-            cookie_secret="dev",
-            autoescape=None,
-            login_url="/login",
-        )
-        tornado.web.Application.__init__(self, handlers, **settings)
+        tornado.web.Application.__init__(self, handlers, **config.settings)
 
 class BaseHandler(tornado.web.RequestHandler):
     """
@@ -46,7 +36,7 @@ class BaseHandler(tornado.web.RequestHandler):
     """
     def get_current_user(self):
         user_id = self.get_secure_cookie("user")
-        if not user_id: 
+        if not user_id:
             return None
         return db.query(m.User).filter_by(id=user_id)
 
@@ -70,16 +60,20 @@ class BaseHandler(tornado.web.RequestHandler):
         if form_define.has_key('_form'):
             form_error_message['form'] = form_define['_form'](form)
             error = error or bool(form_error_message['form'])
+        print error, form_error_message
         return error,form_error_message
-            
+
+    def jinja_render(self, path, **kwargs):
+        config.render.render(self, path, **kwargs)
+
 
 
 
 class HomeHandler(BaseHandler):
     def get(self):
         users = db.query(m.User).all()
-        #self.write(render.dev_home(users=users))
-        self.render('dev_home.html',users=users)
+        self.jinja_render('dev_home.html', users=users)
+        #self.render('dev_home.html',users=users)
 
 class LoginHandler(BaseHandler):
     def get(self):
@@ -88,9 +82,10 @@ class LoginHandler(BaseHandler):
         args = {'form':form,
                 'form_error_message':{},
                 }
-        self.render('dev_login.html',**args)
-            
-    
+        self.jinja_render('dev_login.html', **args)
+        #self.render('dev_login.html',**args)
+
+
     def post(self):
         form = self.get_form(f.login_form)
         error,form_error_message = self.validate(form,f.login_form)
@@ -102,10 +97,11 @@ class LoginHandler(BaseHandler):
         args = {'form':form,
                 'form_error_message':form_error_message,
                 }
-        self.render('dev_login.html',**args)
-            
+        self.jinja_render('dev_login.html', **args)
+        #self.render('dev_login.html',**args)
 
-        
+
+
 
 class LogoutHandler(BaseHandler):
     def get(self):
@@ -119,7 +115,9 @@ class RegisterHandler(BaseHandler):
         args = {'form':form,
                 'form_error_message':form_error_message,
                 }
-        self.render('dev_register.html',**args)
+        self.jinja_render('dev_register.html',**args)
+        #self.render('dev_register.html',**args)
+
     def post(self):
         form = self.get_form(f.register_form)
         error,form_error_message = self.validate(form,f.register_form)
@@ -136,7 +134,8 @@ class RegisterHandler(BaseHandler):
         args = {'form':form,
                 'form_error_message':form_error_message,
                 }
-        self.render('dev_register.html',**args)
+        self.jinja_render('dev_register.html',**args)
+        #self.render('dev_register.html',**args)
 
 class UserConsoleHandler(BaseHandler):
     @tornado.web.authenticated
@@ -154,3 +153,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+

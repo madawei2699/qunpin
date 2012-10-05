@@ -5,7 +5,7 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 
-#import template
+import template
 
 # 是否开启调试模式, 生产环境中, 请设为False
 DEBUG = True
@@ -17,7 +17,8 @@ DEBUG = True
 engine = create_engine(
     "mysql+mysqldb://root:root1234@localhost:3306/qp_db?charset=utf8",
     encoding='utf8',
-    echo=True,  # 是否在控制台输出SQL语句
+    #echo=True,  # 是否在控制台输出SQL语句
+    echo=False,  # 是否在控制台输出SQL语句
 )
 db = scoped_session(sessionmaker(bind=engine))
 
@@ -31,10 +32,24 @@ template_path = os.path.join(app_root, "templates")
 
 
 # jinja2模板设置
-#render = template.render(
-#    template_path,
-#    encoding='utf-8',
-#)
+render = template.Render(
+    template_path,
+    encoding='utf-8',
+)
+
+
+# tornado设置
+settings = dict(
+    template_path=template_path,
+    static_path=static_path,
+    debug=DEBUG,
+    xsrf_cookies=True,
+    cookie_secret="dev",
+    autoescape=None,
+    login_url="/login",
+)
+
+
 
 
 

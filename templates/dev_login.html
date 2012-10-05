@@ -4,30 +4,25 @@
   <meta charset="UTF-8">
   <title>qunpin_login_dev</title>
 </head>
+{% macro error_msg(name) -%}
+    {% if form_error_message and form_error_message.get(name,'') %}
+        <span>{{ form_error_message[name] }}</span>
+    {% endif %}
+{%- endmacro %}
 <body>
   <div>
     <form action="/login" method="post">
       <div>
         <input type="email" name="email" placeholder="邮箱" value="{{form['email']}}"/>
-        {%if form_error_message and form_error_message.get('email','')%}
-        <span>{{form_error_message['email']}}</span>
-        {%end%}
+        {{ error_msg('email') }}
       </div>
       <div>
         <input type="password" name="password" />
-        {%if form_error_message and form_error_message.get('password','')%}
-        <span>{{form_error_message['password']}}</span>
-        {%end%}
+        {{ error_msg('password') }}
       </div>
-
-      {%if form_error_message and form_error_message.get('form','')%}
+      {{ error_msg('form') }}
       <div>
-        <span>{{form_error_message['form']}}</span>
-      </div>
-      {%end%}
-
       {{ xsrf_form_html() }}
-      <div>
         <input type="submit" value="登录"/>
       </div>
     </form>
