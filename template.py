@@ -5,7 +5,13 @@ from jinja2 import Environment, FileSystemLoader
 import config
 
 class Render:
-    '''此类提供对jinja2模板的支持.
+    '''此类提供对jinja2模板的支持, 以及自定义过滤器的功能.
+
+    :注意:
+
+         - jinja2要求模板中字符串值必须为unicode的, 所以请确保你的模板中
+         - 的字符串为unicode的, 即在render的最后一个字典参数中的所有value
+         - 必须为u'群品'这样的字符串, 而不是'群品'
     '''
     def __init__(self, *a, **kwargs):
         extensions = kwargs.pop('extensions', [])
@@ -27,12 +33,19 @@ class Render:
             :path: 模板路径(如果带后缀, 则必须为.html后缀)
             :kwargs: 传递到模板中的参数字典
         '''
-        # 将tornado中的xsrf_form_html()方法'转移'到jinja2中
-        if config.settings['xsrf_cookies']:
-            kwargs['xsrf_form_html'] = handler.xsrf_form_html
-        # 将tornado中的current_user()方法'转移'到jinja2中
-        kwargs['current_user'] = handler.current_user
-        kwargs['debug'] = config.DEBUG
+        # 将tornado中的传递给模板的隐式参数'转移'到jinja2中
+        args = dict(
+            handler = handler,
+            request = handler.request,
+            current_user = handler.current_user,
+            locale = handler.locale,
+            _ = handler.locale.translate,
+            static_url = handler.static_url,
+            xsrf_form_html = handler.xsrf_form_html,
+            reverse_url = handler.application.reverse_url
+        )
+        args.update(handler.ui)
+        kwargs.update(args)
 
         handler.write(self.env.get_template('%s.html' % path.strip('.html')).render(**kwargs))
 

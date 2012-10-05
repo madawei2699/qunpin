@@ -60,7 +60,6 @@ class BaseHandler(tornado.web.RequestHandler):
         if form_define.has_key('_form'):
             form_error_message['form'] = form_define['_form'](form)
             error = error or bool(form_error_message['form'])
-        print error, form_error_message
         return error,form_error_message
 
     def jinja_render(self, path, **kwargs):
