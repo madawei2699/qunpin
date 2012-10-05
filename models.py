@@ -9,10 +9,10 @@ from datetime import datetime
 import sqlalchemy as sa
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+#from sqlalchemy.orm import sessionmaker
 
 #http://docs.sqlalchemy.org/en/rel_0_7/core/expression_api.html#sqlalchemy.sql.expression.text
-from sqlalchemy.sql.expression import text
+#from sqlalchemy.sql.expression import text
 
 #from sqlalchemy import Column, Integer, String
 
@@ -23,14 +23,13 @@ import config
 BaseModel = declarative_base()
 
 
-
 class User(BaseModel):
     __tablename__ = 'users'
 
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
     username = sa.Column(sa.String(100), nullable=False, index=True)
     email = sa.Column(sa.String(100), nullable=False, unique=True, index=True)
-    sex = sa.Column(sa.SmallInteger, default=3)# 1:male,2:female,3:unset
+    sex = sa.Column(sa.SmallInteger, default=3)  # 1:male,2:female,3:unset
     register_time = sa.Column(sa.DateTime, default=datetime.now)
     lock = sa.Column(sa.Boolean, default=False)
     password = sa.Column(sa.String(32))
@@ -39,19 +38,13 @@ class User(BaseModel):
     def _set_salt(self):
         self.salt = md5(str(random())).hexdigest()
 
-    def set_password(self,raw_password):
+    def set_password(self, raw_password):
         self._set_salt()
-        self.password = md5(raw_password+self.salt).hexdigest()
+        self.password = md5(raw_password + self.salt).hexdigest()
 
-    def auth(self,raw_password):
-        password = md5(raw_password+self.salt).hexdigest()
-        return password==self.password
-
-
-
-
-
-
+    def auth(self, raw_password):
+        password = md5(raw_password + self.salt).hexdigest()
+        return password == self.password
 
 
 # 初始化数据库

@@ -11,7 +11,6 @@ import template
 DEBUG = True
 
 
-
 # sqlalchemy 设置
 # dialect+driver://username:password@host:port/database?charset=encoding
 engine = create_engine(
@@ -23,12 +22,10 @@ engine = create_engine(
 db = scoped_session(sessionmaker(bind=engine))
 
 
-
 # 静态文件设置
 app_root = os.path.dirname(__file__)
 static_path = os.path.join(app_root, "static")
 template_path = os.path.join(app_root, "templates")
-
 
 
 # jinja2模板设置
@@ -48,8 +45,3 @@ settings = dict(
     autoescape=None,
     login_url="/login",
 )
-
-
-
-
-

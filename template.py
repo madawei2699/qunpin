@@ -2,7 +2,6 @@
 
 from jinja2 import Environment, FileSystemLoader
 
-import config
 
 class Render:
     '''此类提供对jinja2模板的支持, 以及自定义过滤器的功能.
@@ -15,14 +14,14 @@ class Render:
     '''
     def __init__(self, *a, **kwargs):
         extensions = kwargs.pop('extensions', [])
-        globals = kwargs.pop('globals', {})
+        #globals = kwargs.pop('globals', {})
 
         self.env = Environment(
             loader=FileSystemLoader(*a, **kwargs),
             extensions=extensions,
             trim_blocks=True,
         )
-        self.env.globals.update(globals)
+        #self.env.globals.update(globals)
 
     def render(self, handler, path, **kwargs):
         '''利用jinja2渲染模板, 并结合tornado的write方法显示页面
@@ -35,19 +34,20 @@ class Render:
         '''
         # 将tornado中的传递给模板的隐式参数'转移'到jinja2中
         args = dict(
-            handler = handler,
-            request = handler.request,
-            current_user = handler.current_user,
-            locale = handler.locale,
-            _ = handler.locale.translate,
-            static_url = handler.static_url,
-            xsrf_form_html = handler.xsrf_form_html,
-            reverse_url = handler.application.reverse_url
+            handler=handler,
+            request=handler.request,
+            current_user=handler.current_user,
+            locale=handler.locale,
+            _=handler.locale.translate,
+            static_url=handler.static_url,
+            xsrf_form_html=handler.xsrf_form_html,
+            reverse_url=handler.application.reverse_url
         )
         args.update(handler.ui)
         kwargs.update(args)
 
-        handler.write(self.env.get_template('%s.html' % path.strip('.html')).render(**kwargs))
+        handler.write(self.env.get_template('%s.html' %
+                path.strip('.html')).render(**kwargs))
 
     def add_filter(self, filter_func, filter_name=None):
         '''添加自定义的filter(过滤器)
@@ -71,5 +71,3 @@ class Render:
         if filter_name is None:
             filter_name = filter_func.__name__
         self.env.filter[filter_name] = filter_func
-
-

@@ -1,18 +1,16 @@
 #!/usr/bin/env python
 #coding:utf-8
 
-import os.path
-
 import tornado.database
 import tornado.httpserver
 import tornado.ioloop
 import tornado.web
 import tornado.options
-from tornado.options import define,options
+from tornado.options import define, options
 
 import form as f
-import models as  m
-import config # 数据库配置 以及其他配置
+import models as m
+import config  # 数据库配置 以及其他配置
 
 define("port", default=8888, help="run on the given port", type=int)
 
@@ -30,6 +28,7 @@ class Application(tornado.web.Application):
         ]
         tornado.web.Application.__init__(self, handlers, **config.settings)
 
+
 class BaseHandler(tornado.web.RequestHandler):
     """
     handler 的基类，方便为个handler增加通用方法
@@ -40,32 +39,32 @@ class BaseHandler(tornado.web.RequestHandler):
             return None
         return db.query(m.User).filter_by(id=user_id)
 
-    def get_form(self,form_define):
+    def get_form(self, form_define):
         form = {}
         for fild in form_define.keys():
-            print('get fild ->',fild)
-            if fild=='_form': continue
-            form[fild] = self.get_argument(fild,'')
+            print('get fild ->', fild)
+            if fild == '_form':
+                continue
+            form[fild] = self.get_argument(fild, '')
         return form
 
-    def validate(self,form,form_define):
+    def validate(self, form, form_define):
         form_error_message = {}
         error = False
-        for fild,validator in form_define.iteritems():
-            print('validate fild ->',fild)
-            if fild=='_form':continue
+        for fild, validator in form_define.iteritems():
+            print('validate fild ->', fild)
+            if fild == '_form':
+                continue
             form_error_message[fild] = validator(form[fild])
-            error = error or  bool(form_error_message[fild])
+            error = error or bool(form_error_message[fild])
 
-        if form_define.has_key('_form'):
+        if '_form' in form_define:
             form_error_message['form'] = form_define['_form'](form)
             error = error or bool(form_error_message['form'])
-        return error,form_error_message
+        return error, form_error_message
 
     def jinja_render(self, path, **kwargs):
         config.render.render(self, path, **kwargs)
-
-
 
 
 class HomeHandler(BaseHandler):
@@ -74,32 +73,30 @@ class HomeHandler(BaseHandler):
         self.jinja_render('dev_home.html', users=users)
         #self.render('dev_home.html',users=users)
 
+
 class LoginHandler(BaseHandler):
     def get(self):
         self.clear_cookie('user')
         form = self.get_form(f.login_form)
-        args = {'form':form,
-                'form_error_message':{},
+        args = {'form': form,
+                'form_error_message': {},
                 }
         self.jinja_render('dev_login.html', **args)
         #self.render('dev_login.html',**args)
 
-
     def post(self):
         form = self.get_form(f.login_form)
-        error,form_error_message = self.validate(form,f.login_form)
+        error, form_error_message = self.validate(form, f.login_form)
         if not error:
             user = db.query(m.User).filter_by(email=form['email']).one()
             self.set_secure_cookie("user", str(user.id))
             self.redirect(self.get_argument("next", "/"))
             return None
-        args = {'form':form,
-                'form_error_message':form_error_message,
+        args = {'form': form,
+                'form_error_message': form_error_message,
                 }
         self.jinja_render('dev_login.html', **args)
         #self.render('dev_login.html',**args)
-
-
 
 
 class LogoutHandler(BaseHandler):
@@ -107,19 +104,20 @@ class LogoutHandler(BaseHandler):
         self.clear_cookie("user")
         self.redirect(self.get_argument("next", "/"))
 
+
 class RegisterHandler(BaseHandler):
     def get(self):
         form = self.get_form(f.register_form)
         form_error_message = {}
-        args = {'form':form,
-                'form_error_message':form_error_message,
+        args = {'form': form,
+                'form_error_message': form_error_message,
                 }
-        self.jinja_render('dev_register.html',**args)
+        self.jinja_render('dev_register.html', **args)
         #self.render('dev_register.html',**args)
 
     def post(self):
         form = self.get_form(f.register_form)
-        error,form_error_message = self.validate(form,f.register_form)
+        error, form_error_message = self.validate(form, f.register_form)
         if not error:
             form['password'] = form['password_1']
             del form['password_1']
@@ -128,18 +126,20 @@ class RegisterHandler(BaseHandler):
             new_user.set_password(form['password'])
             db.add(new_user)
             db.commit()
-            self.redirect(self.get_argument('next','/login'))
+            self.redirect(self.get_argument('next', '/login'))
             return None
-        args = {'form':form,
-                'form_error_message':form_error_message,
+        args = {'form': form,
+                'form_error_message': form_error_message,
                 }
-        self.jinja_render('dev_register.html',**args)
+        self.jinja_render('dev_register.html', **args)
         #self.render('dev_register.html',**args)
+
 
 class UserConsoleHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         self.write('hi')
+
 
 def main():
     if config.DEBUG:
@@ -152,5 +152,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
