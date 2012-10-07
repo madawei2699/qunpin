@@ -1,0 +1,643 @@
+@charset "UTF-8";
+/*图标字体*/
+@font-face {
+  font-family: 'icons';
+  src: url("/static/font/icons.eot");
+  src: url("/static/font/icons.eot?#iefix") format('embedded-opentype'), url("/static/font/icons.woff") format('woff'), url("/static/font/icons.ttf") format('truetype'), url("/static/font/icons.svg#icons") format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+/*Eric Meyer's Reset CSS v2.0*/
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  margin: 0;
+  padding: 0;
+}
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol,
+ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+img {
+  max-width: 100%;
+}
+/*变量*/
+.icon {
+  font-family: 'icons';
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  text-align: center;
+  line-height: 1em;
+}
+.width {
+  width: 1000px;
+  margin: 0 auto;
+  padding: 0 12px;
+  overflow: hidden;
+}
+.transition {
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+/*桌面版与 ipad 横版布局*/
+body {
+  min-width: 1024px;
+  color: #252525;
+  font: 16px/24px Arial, sans-serif;
+  background: #f8f8f8 url('/static/img/bg.png') repeat left top;
+  /*-webkit-text-size-adjust: 100%;*/
+
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+/*头部开始*/
+header {
+  margin-bottom: 40px;
+  border-bottom: 1px solid #e4e4e5;
+}
+header#index {
+  margin-bottom: 80px;
+}
+/*顶部导航*/
+#top-nav {
+  color: #f6f6f6;
+  background: #252525;
+  font-size: 14px;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+  line-height: 30px;
+  border-bottom: 1px solid #999;
+}
+#top-nav ul {
+  width: 1000px;
+  margin: 0 auto;
+  padding: 0 12px;
+  overflow: hidden;
+}
+#top-nav li {
+  float: left;
+}
+#top-nav li.right {
+  float: right;
+}
+#top-nav #news:before {
+  font-family: 'icons';
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  text-align: center;
+  line-height: 1em;
+  content: '\e770';
+  margin-right: 0.5em;
+}
+#top-nav a {
+  padding: 0 15px;
+}
+#banner {
+  width: 1000px;
+  margin: 0 auto;
+  padding: 0 12px;
+  overflow: hidden;
+  padding: 30px 12px 15px;
+}
+h1 {
+  width: 150px;
+  height: 60px;
+  font-size: 32px;
+  text-align: center;
+  line-height: 60px;
+  color: #f6f6f6;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+  background: #cc2222;
+  border-radius: 75px / 30px;
+  float: left;
+}
+#search {
+  height: 40px;
+  padding-top: 20px;
+  float: right;
+}
+#search input {
+  width: 0px;
+  height: 20px;
+  padding: 9px 0;
+  font-size: 15px;
+  font-weight: bold;
+  background: #f3f3f3;
+  border: none;
+  border-radius: 0;
+  float: left;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+#search input:focus {
+  outline: 0;
+  background: #fff;
+}
+#search button {
+  width: 80px;
+  height: 40px;
+  font-size: 24px;
+  color: #fff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+  background: #f12f30;
+  border: 0;
+  overflow: visible;
+  position: relative;
+  cursor: pointer;
+  float: right;
+}
+#search .icon-search:before {
+  font-family: 'icons';
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  text-align: center;
+  line-height: 1em;
+  content: '🔍';
+}
+#search:hover input {
+  width: 200px;
+  padding: 9px 5px 9px 10px;
+  border: 1px solid #606060;
+  border-right-style: none;
+}
+#banner-nav {
+  height: 40px;
+  padding-top: 20px;
+  float: right;
+}
+#banner-nav a {
+  width: 80px;
+  height: 40px;
+  text-shadow: 0px 0px 1px rgba(119, 119, 199, 0.5);
+  overflow: hidden;
+  position: relative;
+  float: left;
+}
+#banner-nav strong {
+  font-size: 25px;
+  font-weight: bold;
+  line-height: 40px;
+  position: absolute;
+  top: 0;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+#banner-nav span {
+  font-family: 'icons';
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  text-align: center;
+  line-height: 1em;
+  font-size: 36px;
+  line-height: 40px;
+  position: absolute;
+  top: 40px;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+#banner-nav a:hover strong {
+  top: -40px;
+}
+#banner-nav a:hover span {
+  top: 0;
+}
+#banner-nav .icon-home:before {
+  content: '\2302';
+}
+#banner-nav .icon-book:before {
+  content: '📕';
+}
+#banner-nav .icon-upload:before {
+  content: '📤';
+}
+#banner-nav .icon-info:before {
+  content: '\e705';
+}
+#banner-nav .icon-about:before {
+  content: '👥';
+}
+#banner-nav .selected {
+  color: #cc2222;
+}
+/*头部结束*/
+/*内容开始*/
+#container {
+  width: 1000px;
+  margin: 0 auto;
+  padding: 0 12px;
+  overflow: hidden;
+  margin-bottom: 50px;
+}
+/*主页内容*/
+#slider {
+  width: 960px;
+  padding: 10px;
+  margin: 0 10px 50px;
+  background: #999;
+  overflow: hidden;
+  position: relative;
+}
+#slider img {
+  display: block;
+  float: left;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+#slider img:hover {
+  -webkit-filter: grayscale(0);
+}
+#slogan {
+  width: 960px;
+  height: 220px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.85);
+  position: absolute;
+  top: 120px;
+}
+#slogan h2 {
+  margin-top: 30px;
+  font-size: 48px;
+  text-align: center;
+  line-height: 1.5;
+}
+#slogan h2 span {
+  display: block;
+  font-size: 36px;
+}
+#slider:hover > #slogan {
+  visibility: hidden;
+}
+/*功能介绍*/
+#features {
+  width: 980px;
+  margin: 0 10px 80px;
+  overflow: hidden;
+}
+#features .third {
+  width: 325px;
+  float: left;
+}
+#features h3 {
+  width: 300px;
+  height: 130px;
+  text-align: center;
+  font-size: 30px;
+  line-height: 130px;
+  border-radius: 80px / 30px;
+  border: 3px solid #252525;
+  margin: 0 auto;
+}
+#content {
+  width: 960px;
+  height: 200px;
+  margin: 0 auto;
+  border: 3px solid #252525;
+  border-radius: 80px / 30px;
+}
+/*图书信息，以及章节目录页面*/
+#book-data {
+  width: 960px;
+  height: 200px;
+  margin: 0 auto;
+  border: 3px solid #252525;
+  border-radius: 80px / 30px;
+  height: 300px;
+  margin-bottom: 50px;
+  overflow: hidden;
+}
+#book-data #book-cover {
+  width: 400px;
+  height: 220px;
+  padding: 40px;
+  float: left;
+}
+#book-data #book-cover img {
+  width: 400px;
+  height: 220px;
+}
+#book-data #book-info {
+  width: 400px;
+  padding: 40px;
+  float: left;
+  height: 220px;
+}
+#book-data #book-info li {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+#chapters {
+  width: 880px;
+  height: 300px;
+  margin: 0 auto;
+  padding: 40px;
+}
+#chapters h2 {
+  font-size: 30px;
+  text-align: center;
+  margin-bottom: 50px;
+}
+#chapters li {
+  width: 270px;
+  margin-bottom: 10px;
+  padding-left: 23px;
+  float: left;
+}
+#download,
+#share {
+  margin-bottom: 15px;
+  line-height: 30px;
+  text-align: center;
+  border: 1px solid #252525;
+}
+/*读书页面*/
+#editor {
+  width: 940px;
+  margin: 0 auto 50px;
+  padding: 20px;
+  background: #efefef;
+  overflow: hidden;
+}
+#editor span {
+  width: 80px;
+  margin-right: 20px;
+  padding: 0 20px;
+  line-height: 40px;
+  text-align: center;
+  background: #fff;
+  border: 1px solid #333;
+  cursor: pointer;
+  float: right;
+}
+#page {
+  width: 810px;
+  margin: 0 auto;
+  padding: 50px 72px;
+  color: #252525;
+  text-shadow: 0px 0px 1px rgba(119, 119, 199, 0.5);
+  border: 3px solid #252525;
+  border-radius: 80px / 30px;
+  background: #f5f5f5 url('/static/img/paper.png') repeat left top;
+}
+#page #options {
+  line-height: 30px;
+  text-align: center;
+  border: 1px solid #252525;
+}
+#controller {
+  width: 960px;
+  height: 200px;
+  margin: 0 auto;
+  border: 3px solid #252525;
+  border-radius: 80px / 30px;
+  height: 100px;
+  padding-top: 30px;
+  text-align: center;
+  margin: 50px auto;
+}
+/*注册页面*/
+#register {
+  width: 960px;
+  height: 200px;
+  margin: 0 auto;
+  border: 3px solid #252525;
+  border-radius: 80px / 30px;
+  height: 1000px;
+  padding-top: 50px;
+}
+#register h2 {
+  font-size: 30px;
+  text-align: center;
+  margin-bottom: 50px;
+}
+#register #register-details,
+#register #agreement {
+  width: 600px;
+  height: 300px;
+  margin: 0 auto 50px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+#register #buttons {
+  width: 600px;
+  margin: 0 auto 50px;
+  text-align: center;
+}
+/*上传页面*/
+#upload {
+  width: 960px;
+  height: 200px;
+  margin: 0 auto;
+  border: 3px solid #252525;
+  border-radius: 80px / 30px;
+  height: 700px;
+  padding-top: 50px;
+  text-align: center;
+}
+#upload h2 {
+  font-size: 30px;
+  text-align: center;
+  margin-bottom: 50px;
+}
+#upload #upload-area {
+  width: 300px;
+  height: 150px;
+  margin: 50px auto;
+  color: #999;
+  border: 3px dashed #999;
+  border-radius: 15px;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+#upload .icon-upload:before {
+  font-family: 'icons';
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  text-align: center;
+  line-height: 1em;
+  content: '📤';
+  font-size: 80px;
+  line-height: 150px;
+}
+#upload #upload-area:hover {
+  color: #333;
+  border: 3px dashed #333;
+}
+#book-details {
+  width: 600px;
+  height: 300px;
+  margin: 0 auto;
+  border: 1px solid #ccc;
+}
+/*内容结束*/
+/*底部开始*/
+footer {
+  background: #252525;
+}
+#copyright {
+  width: 960px;
+  margin: 0 auto;
+  color: #fff;
+  font-size: 14px;
+  line-height: 30px;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+#copyright a {
+  margin-right: 15px;
+  float: left;
+}
+#copyright p {
+  float: right;
+}
+/*底部结束*/

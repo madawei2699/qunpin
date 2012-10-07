@@ -144,5 +144,6 @@ def main():
 
 
 if __name__ == "__main__":
+    print "Starting server..."
+    print ' * Running on http://localhost:8888'
     main()
-
