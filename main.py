@@ -12,21 +12,8 @@ import form as f
 import models as m
 import config  # 数据库配置 以及其他配置
 
-define("port", default=8888, help="run on the given port", type=int)
-
 db = config.db
-
-
-class Application(tornado.web.Application):
-    def __init__(self):
-        handlers = [
-            (r"/", HomeHandler),
-            (r"/login", LoginHandler),
-            (r"/logout", LogoutHandler),
-            (r"/register", RegisterHandler),
-            (r"/account", UserConsoleHandler),
-        ]
-        tornado.web.Application.__init__(self, handlers, **config.settings)
+define("port", default=8888, help="run on the given port", type=int)
 
 
 class BaseHandler(tornado.web.RequestHandler):
@@ -141,6 +128,12 @@ class UserConsoleHandler(BaseHandler):
         self.write('hi')
 
 
+class Application(tornado.web.Application):
+    def __init__(self):
+        urls = [(url, globals()[handler]) for (url, handler) in config.urls]
+        tornado.web.Application.__init__(self, urls, **config.settings)
+
+
 def main():
     if config.DEBUG:
         m.initDb()
@@ -152,3 +145,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

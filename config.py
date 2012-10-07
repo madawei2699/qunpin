@@ -7,6 +7,16 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 
 import template
 
+
+# url config
+urls = [
+    (r"/", "HomeHandler"),
+    (r"/login", "LoginHandler"),
+    (r"/logout", "LogoutHandler"),
+    (r"/register", "RegisterHandler"),
+    (r"/account", "UserConsoleHandler"),
+]
+
 # 是否开启调试模式, 生产环境中, 请设为False
 DEBUG = True
 
