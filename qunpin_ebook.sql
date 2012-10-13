@@ -2,6 +2,9 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
+DROP SCHEMA IF EXISTS `qp_ebook_db` ;
+CREATE SCHEMA IF NOT EXISTS `qp_ebook_db` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
+USE `qp_ebook_db` ;
 
 -- -----------------------------------------------------
 -- Table `qp_ebook_db`.`ebook`
@@ -9,7 +12,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 DROP TABLE IF EXISTS `qp_ebook_db`.`ebook` ;
 
 CREATE  TABLE IF NOT EXISTS `qp_ebook_db`.`ebook` (
-  `ebook_id` INT NOT NULL AUTO_INCREMENT COMMENT '书编号' ,
+  `ebook_id` INT NOT NULL COMMENT '书编号' ,
   `title` VARCHAR(45) NOT NULL COMMENT ' 标题' ,
   `subtitle` VARCHAR(45) NULL COMMENT '副标题' ,
   `origin_title` VARCHAR(45) NULL COMMENT '原作名' ,
@@ -32,8 +35,7 @@ CREATE  TABLE IF NOT EXISTS `qp_ebook_db`.`ebook` (
   `rating` FLOAT NULL COMMENT '书评分\\n10分制\\nmax: 10,\\nnumRaters: xxx,\\naverage: \\\"x.x\\\",\\nmin: 0\\n' ,
   `tags` VARCHAR(500) NULL COMMENT '书标签' ,
   `index` TEXT NULL COMMENT '目录\\n主要是用来在图书信息也显示目录。' ,
-  PRIMARY KEY (`ebook_id`) ,
-  UNIQUE INDEX `id_UNIQUE` (`ebook_id` ASC) )
+  PRIMARY KEY (`ebook_id`) )
 ENGINE = InnoDB
 COMMENT = '该表用来存放电子书的基本信息';
 
