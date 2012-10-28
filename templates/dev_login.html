@@ -1,32 +1,29 @@
-<!DOCTYPE HTML>
-<html lang="zh-cn">
-<head>
-  <meta charset="UTF-8">
-  <title>qunpin_login_dev</title>
-</head>
+{% extends 'dev_base.html'%}
+
+{% block title %}群品-登录{% endblock %}
+
 {% macro error_msg(name) -%}
-    {% if form_error_message and form_error_message.get(name,'') %}
-        <span>{{ form_error_message[name] }}</span>
-    {% endif %}
+{% if form_error_message and form_error_message.get(name,'') %}
+<span>{{ form_error_message[name] }}</span>
+{% endif %}
 {%- endmacro %}
-<body>
-  <div>
+
+{% block main %}
+<div>
     <form action="/login" method="post">
-      <div>
-        <input type="email" name="email" placeholder="邮箱" value="{{form['email']}}"/>
-        {{ error_msg('email') }}
-      </div>
-      <div>
-        <input type="password" name="password" />
-        {{ error_msg('password') }}
-      </div>
-      {{ error_msg('form') }}
-      <div>
-      {{ xsrf_form_html() }}
-        <input type="submit" value="登录"/>
-      </div>
+        <div>
+            <input type="email" name="email" placeholder="邮箱" value="{{form.email}}"/>
+            {{ error_msg('email') }}
+        </div>
+        <div>
+            <input type="password" name="password" />
+            {{ error_msg('password') }}
+        </div>
+        {{ error_msg('form') }}
+        <div>
+            {{ xsrf_form_html() }}
+            <input type="submit" value="登录"/>
+        </div>
     </form>
-  </div>
-  
-</body>
-</html>
+</div>
+{% endblock %}

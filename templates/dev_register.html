@@ -1,29 +1,36 @@
-{% extends "base.html" %}
+{% extends 'dev_base.html'%}
+{% block title %}群品-注册{% endblock %}
 
-{% block title %}
-    注册页面
-{% endblock %}
+{% macro error_msg(name) -%}
+{% if form_error_message and form_error_message.get(name,'') %}
+<span>{{ form_error_message[name] }}</span>
+{% endif %}
+{%- endmacro %}
 
-{% block container %}
-    <div id="register">
-        <h2>注册信息输入</h2>
-        <div id="register-details">
-            输入框
-        </div>
-        
-        <h2>许可协议</h2>
-        <div id="agreement">
-            许可协议
-        </div>
-        
-        <div id="buttons">
-            <button>同意</button>
-            <button>取消</button>
-        </div>
+{% block main %}
+<div>
+  <form action="/register" method="post">
+    <div>
+      <input type="email" name="email" placeholder="邮箱" value="{{form.email}}"/>
+      {{ error_msg('email') }}
     </div>
+    <div>
+      <input type="text" name="username" placeholder="名字" value="{{form.username}}"/>
+      {{ error_msg('username') }}
+    </div>
+    <div>
+      <input type="password" name="password_1" placeholder="密码" />
+      {{ error_msg('password_1') }}
+    </div>
+    <div>
+      <input type="password" name="password_2" placeholder="密码确认" />
+      {{ error_msg('password_2') }}
+    </div>
+    {{ error_msg('form') }}
+    <div>
+      {{ xsrf_form_html() }}
+      <input type="submit" value="注册"/>
+    </div>
+  </form>
+</div>
 {% endblock %}
-
-{% block script %}
-    <!-- <script type="text/javascript" src="/static/js/register.js"></script> -->
-{% endblock %}
-
