@@ -1,0 +1,84 @@
+<!DOCTYPE html><!-- saved from url=(0038)http://epub-cn.tk/qunpin/register.html -->
+
+<html lang="zh">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>
+        {% block title %}{% endblock %}
+    </title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;">
+    <!--[if lt IE 9]><script src="js/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/less" href="/static/css/style.css"/>
+    {% block head %}{% endblock %}
+</head>
+<body>
+<header>
+    <nav id="top-nav">
+        <ul>
+            <li>
+                <p id="news">新消息</p>
+            </li>
+            <li class="right"><a href="/login">登陆</a></li>
+            <li class="right"><a href="/register">注册</a></li>
+        </ul>
+    </nav>
+    
+    <div id="banner">
+        <h1>
+            群品
+            <!--<a href="index.html">
+                <img src="images/logo.png" alt="群品" />
+            </a>-->
+        </h1>
+        
+        <form id="search">
+            <input type="text" placeholder="搜索图书">
+            <button type="submit"><span class="icon-search"></span></button>
+            <div id="options">
+            
+            </div>
+        </form>
+        
+        <nav id="banner-nav">
+            <a href="/" class="selected">
+                <strong>主页</strong>
+                <span class="icon-home"></span>
+            </a>
+            <a href="default.htm">
+                <strong>读书</strong>
+                <span class="icon-book"></span>
+            </a>
+            <a href="default.htm">
+                <strong>上传</strong>
+                <span class="icon-upload"></span>
+            </a>
+            <a href="default.htm">
+                <strong>FAQ</strong>
+                <span class="icon-info"></span>
+            </a>
+            <a href="default.htm">
+                <strong>关于</strong>
+                <span class="icon-about"></span>
+            </a>
+        </nav>
+    </div>
+</header>
+
+<div id="container">
+    {% block container %}{% endblock %}
+</div>
+
+<footer>
+    <div id="copyright">
+        <a href="default.htm">联系我们</a>
+        <a href="default.htm">免责声明</a>
+        <p>Copyright &copy; 2012 qunpin.net</p>
+    </div>
+</footer>
+
+<script type="text/javascript" src="/static/third/jquery-1.7.2.min.js"></script>
+{% block script %}{% endblock %}
+</body>
+</html>
