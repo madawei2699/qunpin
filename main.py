@@ -26,26 +26,43 @@ class BaseHandler(tornado.web.RequestHandler):
             return None
         return db.query(m.User).filter_by(id=user_id)
 
-    def get_form(self, form_define):
-        form = {}
-        for fild in form_define.keys():
-            print('get fild ->', fild)
-            if fild == '_form':
+    def get_form(self, form_define, instance=None):
+        """
+        如果没有instance这个参数
+        则通过get_argument 方法
+        从handler.request.argument 获取
+
+        如果有instance则从instance获取
+        instance是一个模型实例
+
+        如果想获取一个空form 直接生成一个
+        FormContainer实例
+        """
+        form = f.FormContainer()
+        if instance is not None:
+            get=lambda field : getattr(instance, field, '')
+        else:
+            get=lambda field : self.get_argument(field, '')
+
+        for field in form_define.keys():
+            if field == '_form':
                 continue
-            form[fild] = self.get_argument(fild, '')
+            form[field] = get(field)
         return form
 
-    def validate(self, form, form_define):
-        form_error_message = {}
-        error = False
-        for fild, validator in form_define.iteritems():
-            print('validate fild ->', fild)
-            if fild == '_form':
-                continue
-            form_error_message[fild] = validator(form[fild])
-            error = error or bool(form_error_message[fild])
 
-        if '_form' in form_define:
+    def validate(self, form, form_define):
+        form_error_message = f.FormContainer()
+        error = False
+        for field, validator in form_define.iteritems():
+            if error: #fail fast 
+                break
+            if field == '_form':
+                continue
+            form_error_message[field] = validator(form[field])
+            error = error or bool(form_error_message[field])
+
+        if not error and '_form' in form_define:
             form_error_message['form'] = form_define['_form'](form)
             error = error or bool(form_error_message['form'])
         return error, form_error_message
@@ -95,7 +112,7 @@ class LogoutHandler(BaseHandler):
 class RegisterHandler(BaseHandler):
     def get(self):
         form = self.get_form(f.register_form)
-        form_error_message = {}
+        form_error_message = m.FormContainer()
         args = {'form': form,
                 'form_error_message': form_error_message,
                 }

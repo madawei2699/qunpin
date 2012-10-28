@@ -73,3 +73,41 @@ login_form = {
     'password': login_form_check_password,
     '_form': login_form_check_form,
 }
+
+
+class FormContainer(dict):
+    """
+    之前表单使用 `dict` 存放 
+    #in handler
+    form = dict(field_1='bla',
+                field_2='bla',
+    )
+
+    # in templates/foobar.html
+    <form>
+        <input name='field_1'value="{{form['field_1']">
+        <input name='field_2'value="{{form['field_2']">
+    </form>
+
+    改用 `FormContainer` 存放
+    FormContainer 可以同过读写属性来存取表单的值
+    对于不存在的属性，默认返回空字符串
+    #in handler
+    form = FormContainer()
+
+    # in templates/foobar.html
+    <form>
+        <input name='field_1'value="{{form.field_1}}">
+        <input name='field_2'value="{{form.field_2}}">
+    </form>
+
+    """
+    def __getattr__(self, name):
+        try:
+            return self[name]
+        except KeyError:
+            return ''
+
+    def __setattr__(self, name, value):
+        self[name] = value
+
