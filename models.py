@@ -48,14 +48,25 @@ class User(BaseModel):
 
 
 # 初始化数据库
-def initDb():
+def initDb(force=False):
     metadata = BaseModel.metadata
+    if force:
+        metadata.drop_all(config.engine)
     metadata.create_all(config.engine)
-    #session = sessionmaker(bind=config.engine)()
     try:
         config.db.commit()
     except IntegrityError:  # 已经初始化过了
         pass
 
 if __name__ == '__main__':
-    initDb()
+    """
+    如果运行这个脚本，数据库将可能被初始化
+    """
+    if config.DEBUG:
+        force = raw_input(u'输入`yes` 将删除旧表')
+        if force.lower() == 'yes':
+            initDb(force=True)
+        else:
+            print(u'什么都没做')
+    else:
+        initDb()
