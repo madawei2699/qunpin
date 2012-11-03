@@ -2,3 +2,10 @@
 
 {% block title %} 群品首页 {% endblock %}
 
+{% block main %}
+<h3>书</h3>
+{%for book in books%}
+<div><a href="/book/{{book.id}}">{{book.title}}</a></div>
+{% endfor %}
+{% endblock %}
+

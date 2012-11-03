@@ -1,0 +1,18 @@
+{% extends 'dev_base.html'%}
+
+{% block title %}群品-{{book.title}}{% endblock %}
+
+
+{% block main %}
+<div>
+    <div><a href="/book/{{book.id}}">书页</a></div>
+    <div><a href="/book/edit_chapter/{{book.id}}?cid={{chapter.id}}">编辑</a></div>
+    <div>
+        {{chapter.content}}
+    </div>
+    <div>
+        {% if paging.pre %}<span><a href="/book/{{book.id}}/{{paging.pre.id}}">前一页</a></span>{% endif %}
+        {% if paging.post %}<span><a href="/book/{{book.id}}/{{paging.post.id}}">后一页</a></span>{% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'dev_base.html'%}
+
+{% block title %}群品-书-{{book.title}}{% endblock %}
+
+
+{% block main %}
+<div>
+    <div>
+        <h3>标题</h3> 
+        {{book.title}}
+    </div>
+    <div>
+        <h3>副标题</h3> 
+        {{book.subtitle}}
+    </div>
+    <div>
+        <h3>作者</h3> 
+        {{book.authors}}
+    </div>
+    <div>
+        <h3>简介</h3>
+        {{book.summary}}
+    </div>
+    <div>
+        <h3>目录</h3>
+        {%for chapter in book.chapters %}
+        <p><a href="/book/{{book.id}}/{{chapter.id}}">{{chapter.title}}</a></p>
+        {% endfor %}
+    </div>
+    <div>
+        <h3>操作</h3>
+        <ul>
+            <li><a href="/book/edit?bid={{book.id}}">辑书本信息</a></li>
+            <li><a href="/book/edit_chapter/{{book.id}}">追加章节</a></li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

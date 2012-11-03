@@ -1,0 +1,38 @@
+{% extends 'dev_base.html'%}
+
+{% block title %}群品-编辑{% endblock %}
+
+{% macro error_msg(name) -%}
+{% if form_error_message and form_error_message.get(name,'') %}
+<span>{{ form_error_message[name] }}</span>
+{% endif %}
+{%- endmacro %}
+
+{% block main %}
+<div>
+    <form action="/book/edit" method="post">
+        <div>
+            <input type="title" name="title" placeholder="标题" value="{{form.title}}"/>
+            {{ error_msg('title') }}
+        </div>
+        <div>
+            <input type="subtitle" name="subtitle" placeholder="副标题" value="{{form.subtitle}}"/>
+            {{ error_msg('subtitle') }}
+        </div>
+        <div>
+            <input type="authors" name="authors" placeholder="作者们" value="{{form.authors}}"/>
+            {{ error_msg('authors') }}
+        </div>
+        <div>
+            <textarea name="summary">{{form.summary}}</textarea> 
+            {{ error_msg('summary') }}
+        </div>
+        {{ error_msg('form') }}
+        <input type="hidden" name="bid"  value="{{form.bid}}"/>
+        {{ xsrf_form_html() }}
+        <div>
+            <input type="submit" value="提交"/>
+        </div>
+    </form>
+</div>
+{% endblock %}

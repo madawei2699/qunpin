@@ -1,7 +1,7 @@
-#!/usr/bin/env python
 #coding:utf-8
 
-import tornado.database
+import logging
+
 import tornado.httpserver
 import tornado.ioloop
 import tornado.web
@@ -25,6 +25,29 @@ class BaseHandler(tornado.web.RequestHandler):
         if not user_id:
             return None
         return db.query(m.User).filter_by(id=user_id)
+
+    def get_safe_argument(self, name, callback):
+        """
+        没有参数 或者 回调异常会返回 None
+        
+        应用场景 ： 将 bid 转化为整形，或者返回 None 
+                    避免查询数据库时的造成异常
+        """
+        try:
+            assert callable(callback)
+        except AssertionError:
+            raise ValueError("filter `%s` is not callable" \
+                    %(str(callback)))
+
+        value = self.get_argument(name, None)
+        if value is None: 
+            return None
+        try:
+            value = callback(value)
+        except :
+            value = None
+        return value
+
 
     def get_form(self, form_define, instance=None):
         """
@@ -74,7 +97,10 @@ class BaseHandler(tornado.web.RequestHandler):
 class HomeHandler(BaseHandler):
     def get(self):
         users = db.query(m.User).all()
-        self.jinja_render('dev_home.html', users=users)
+        books = db.query(m.Book).all()
+        args = dict(books=books,
+                users=users)
+        self.jinja_render('dev_home.html', **args )
         #self.render('dev_home.html',users=users)
 
 
@@ -112,7 +138,7 @@ class LogoutHandler(BaseHandler):
 class RegisterHandler(BaseHandler):
     def get(self):
         form = self.get_form(f.register_form)
-        form_error_message = m.FormContainer()
+        form_error_message = f.FormContainer()
         args = {'form': form,
                 'form_error_message': form_error_message,
                 }
@@ -143,6 +169,144 @@ class UserConsoleHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         self.write('hi')
+
+
+class BookEditorHandler(BaseHandler):
+    #TODO uncommnet the next line to enable auth decorator
+    @tornado.web.authenticated
+    def get(self):
+        """
+        添加新的书或者修改存在的书的信息 
+        """
+        bid = self.get_safe_argument('bid', int)
+        if bid is None:
+            form = self.get_form(f.edit_book_form)
+        else:
+            #TODO handler exception. bid maybe illegal
+            book = db.query(m.Book).filter_by(id=bid).first()
+            if not book:
+                raise tornado.web.HTTPError(404)
+
+            form = self.get_form(f.edit_book_form, book)
+            form.bid = bid
+        args = { 'form':form,
+                'form_error_message ' : f.FormContainer()}
+        self.jinja_render("dev_edit_book.html", **args)
+
+    @tornado.web.authenticated
+    def post(self):
+        bid = self.get_safe_argument('bid', int)
+        form = self.get_form(f.edit_book_form)
+        error, form_error_message = self.validate(form, f.edit_book_form)
+        if error:
+            args = {'form' : form,
+                    'form_error_message' : form_error_message,
+                    }
+            self.jinja_render('dev_edit_book.html', **args)
+            return None
+        if bid is not None:
+            book = db.query(m.Book).filter_by(id=bid).first()
+            book.update(**form)
+            logging.debug("main->BookEditorHandler->post"
+                    ":update")
+        else:
+            logging.debug("main->BookEditorHandler->post"
+                    ":add")
+            book = m.Book(**form)
+            db.add(book)
+        db.commit()
+        self.redirect('/book/%s' %(book.id) )
+
+
+
+        
+
+class BookIndexHandler(BaseHandler):
+    def get(self, bid):
+        book = db.query(m.Book).filter_by(id=bid).first()
+        if book is None:
+            raise tornado.web.HTTPError(404)
+        args = dict(book = book)
+        self.jinja_render('dev_book_index.html', **args)
+
+    
+class ChapterEditHandler(BaseHandler):
+    """
+    把修改过和添加 chapter 硬塞一起 结果这写的有点反人类
+    bid book.id
+    cid chapter.id
+    """
+    @tornado.web.authenticated
+    def get(self, bid):
+        book = db.query(m.Book).filter_by(id=bid).first()
+        if book is None:
+            raise tornado.web.HTTPError(404)
+        cid = self.get_safe_argument('cid', int)
+        if cid is not None:
+            chapter = db.query(m.Chapter).\
+                    filter_by(id=cid, book_id=bid).first()
+            if chapter is None:
+                raise tornado.web.HTTPError(404)
+            form = self.get_form(f.chapter_form, chapter)
+            form.cid = cid
+        else:
+            form = self.get_form(f.chapter_form)
+        form_error_message = f.FormContainer()
+        args = dict(bid=bid,
+                form=form,
+                form_error_message=form_error_message)
+        self.jinja_render('dev_edit_chapter', **args)
+
+    @tornado.web.authenticated
+    def post(self, bid):
+        book = db.query(m.Book).filter_by(id=bid).first()
+        if book is None:
+            return
+
+        form = self.get_form(f.chapter_form)
+        error, form_error_message = self.validate(form, f.chapter_form)
+        if error:
+            args = {'form' : form,
+                    'form_error_message' : form_error_message,
+                    'bid' : bid,
+                    }
+            self.jinja_render('dev_edit_chapter.html', **args)
+            return None
+        cid = self.get_safe_argument('cid', int)
+        if cid is not None:
+            chapter = db.query(m.Chapter).\
+                    filter_by(id=cid, book_id=bid).first()
+            if chapter is None:
+                return None
+            chapter.update(**form)
+        else:
+            form.book_id = bid
+            chapter = m.Chapter(**form)
+            db.add(chapter)
+        db.commit()
+        chapter = db.merge(chapter)
+        self.redirect("/book/%s/%s" %(bid, str(chapter.id)))
+        return None
+
+class ChapterReadHandler(BaseHandler):
+    def get(self, bid, cid):
+        chapter = db.query(m.Chapter).\
+                filter_by(id=cid, book_id=bid).first()
+        if chapter is None:
+            raise tornado.web.HTTPError(404)
+        book = db.query(m.Book).filter_by(id=bid).first()
+        args = dict(chapter=chapter,
+                book=book)
+        paging = f.FormContainer()
+        index = book.chapters.index(chapter) 
+        if index > 0:
+            paging.pre = book.chapters[index-1]
+        if index < len(book.chapters)-1:
+            paging.post = book.chapters[index+1]
+        args['paging'] = paging
+        self.jinja_render("dev_chapter.html", **args)
+
+        
 
 
 class Application(tornado.web.Application):

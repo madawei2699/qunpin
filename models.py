@@ -9,7 +9,7 @@ from datetime import datetime
 import sqlalchemy as sa
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.declarative import declarative_base
-#from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import relationship, backref
 
 #http://docs.sqlalchemy.org/en/rel_0_7/core/expression_api.html#sqlalchemy.sql.expression.text
 #from sqlalchemy.sql.expression import text
@@ -22,8 +22,14 @@ import config
 
 BaseModel = declarative_base()
 
+class ModelExtend(object):
+    def update(self, **kwargs):
+        for attr, value in kwargs.iteritems():
+            if hasattr(self, attr):
+                setattr(self,attr,value)
 
-class User(BaseModel):
+
+class User(BaseModel, ModelExtend):
     __tablename__ = 'users'
 
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
@@ -46,6 +52,48 @@ class User(BaseModel):
         password = md5(raw_password + self.salt).hexdigest()
         return password == self.password
 
+#book_author_association = sa.Table("book_author_association", 
+#        BaseModel.metadata, 
+#        sa.Column('author_id', sa.Integer, 'authors.id'),
+#        sa.Column('Booke_id', sa.Integer, 'Book.id')
+#        )
+#
+#class Author(BaseModel):
+#    __tablename__ = 'authors'
+#    id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
+#    name = sa.Column(sa.String(100), index=True, unique=False)
+#    intro = sa.Column(sa.Text)
+#    isTranslator = sa.Column(sa.Boolean, default=False)
+
+class Book(BaseModel,ModelExtend):
+    #目前尽量只添加和业务逻辑有关的列
+    __tablename__ = 'books'
+    id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
+    #TODO  should title be unique?
+    title = sa.Column(sa.String(100), nullable=False,\
+            unique=False, index=True)
+    subtitle = sa.Column(sa.String(100), index=True)
+    #authors = relationship('Author',
+    #        secondary=book_author_association,
+    #        bacref='authors')
+    authors = sa.Column(sa.String(100), index=True)
+    #maintainer  
+    #license
+    #privilige
+    summary = sa.Column(sa.Text)
+    chapters = relationship('Chapter', backref='book')
+
+class Chapter(BaseModel, ModelExtend):
+    __tablename__ = 'chapters'
+    id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
+    title = sa.Column(sa.String(100))
+    book_id = sa.Column(sa.Integer, sa.ForeignKey('books.id'))
+    content = sa.Column(sa.Text)
+
+    def __cmp__(self, other):
+        return self.id - other.id
+
+
 
 # 初始化数据库
 def initDb(force=False):
@@ -63,10 +111,10 @@ if __name__ == '__main__':
     如果运行这个脚本，数据库将可能被初始化
     """
     if config.DEBUG:
-        force = raw_input(u'输入`yes` 将删除旧表')
+        force = raw_input('input `yes` to drop conflict table:')
         if force.lower() == 'yes':
             initDb(force=True)
         else:
-            print(u'什么都没做')
+            print(u'bye')
     else:
         initDb()

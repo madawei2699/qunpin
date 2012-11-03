@@ -15,6 +15,128 @@ db = config.db
 EMAIL_PATTERN = re.compile(r'^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@'
                 '([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$')
 
+#validator
+#这里存放一些验证函数
+
+#无论如何都放回空字符串，不做任何验证
+force_valid = lambda x : ''
+def not_null(data, field=None, err_msg=None):
+    if field is None:
+        field = ''
+    if err_msg is None:
+        err_msg = u'不能留空'
+    if not data:
+        return field+err_msg
+    return ''
+
+
+
+
+
+def register_form_check_username(username):
+    if len(username) < 1:
+        return u"用户名不能为空"
+    elif db.query(m.User).filter_by(username=username).first():
+        return u"用户名已被注册"
+    return ''
+
+
+def register_form_check_email(email):
+    if not EMAIL_PATTERN.match(email):
+        return u"邮箱格式不正确"
+    elif db.query(m.User).filter_by(email=email).first():
+        return u"邮箱已被注册"
+    return ''
+
+
+def register_form_check_password(password):
+    return '' if len(password) > 1 else u"密码不能为空"
+
+
+def register_form_check_form(form):
+    if form['password_1'] != form['password_2']:
+        return u'两次密码输入不一致'
+    return ''
+
+register_form = {
+    'username': register_form_check_username,
+    'email': register_form_check_email,
+    'password_1': register_form_check_password,
+    'password_2': register_form_check_password,
+    '_form': register_form_check_form,
+}
+#############################
+
+
+def register_form_check_username(username):
+    if len(username) < 1:
+        return u"用户名不能为空"
+    elif db.query(m.User).filter_by(username=username).first():
+        return u"用户名已被注册"
+    return ''
+
+
+def register_form_check_email(email):
+    if not EMAIL_PATTERN.match(email):
+        return u"邮箱格式不正确"
+    elif db.query(m.User).filter_by(email=email).first():
+        return u"邮箱已被注册"
+    return ''
+
+
+def register_form_check_password(password):
+    return '' if len(password) > 1 else u"密码不能为空"
+
+
+def register_form_check_form(form):
+    if form['password_1'] != form['password_2']:
+        return u'两次密码输入不一致'
+    return ''
+
+register_form = {
+    'username': register_form_check_username,
+    'email': register_form_check_email,
+    'password_1': register_form_check_password,
+    'password_2': register_form_check_password,
+    '_form': register_form_check_form,
+}
+#############################
+
+
+def register_form_check_username(username):
+    if len(username) < 1:
+        return u"用户名不能为空"
+    elif db.query(m.User).filter_by(username=username).first():
+        return u"用户名已被注册"
+    return ''
+
+
+def register_form_check_email(email):
+    if not EMAIL_PATTERN.match(email):
+        return u"邮箱格式不正确"
+    elif db.query(m.User).filter_by(email=email).first():
+        return u"邮箱已被注册"
+    return ''
+
+
+def register_form_check_password(password):
+    return '' if len(password) > 1 else u"密码不能为空"
+
+
+def register_form_check_form(form):
+    if form['password_1'] != form['password_2']:
+        return u'两次密码输入不一致'
+    return ''
+
+register_form = {
+    'username': register_form_check_username,
+    'email': register_form_check_email,
+    'password_1': register_form_check_password,
+    'password_2': register_form_check_password,
+    '_form': register_form_check_form,
+}
+#############################
+
 
 def register_form_check_username(username):
     if len(username) < 1:
@@ -73,6 +195,21 @@ login_form = {
     'password': login_form_check_password,
     '_form': login_form_check_form,
 }
+
+#############################
+edit_book_form=dict(
+        title = lambda x : not_null(x,u'标题'),
+        subtitle = force_valid, 
+        authors = force_valid, 
+        summary= force_valid,
+        _form = force_valid
+        )
+
+#############################
+chapter_form = dict(
+        content = lambda x : not_null(x, u'内容'),
+        title = lambda x : not_null(x, u'标题')
+        )
 
 
 class FormContainer(dict):
