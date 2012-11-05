@@ -28,14 +28,12 @@ DEBUG = True
 # 在~目录（Windows下面也有这个目录，所以不用担心）下面建立一个文件
 _path = os.path.join(os.path.expanduser('~'), '.qunpin_db_config')
 if not os.path.exists(_path):
-    _f = file(_path, 'w')
     _name = raw_input("Please input your MySQL username: ")
     _pwd = raw_input("Please input your MySQL password: ")
-    _f.write('%s\n%s' % (_name, _pwd))
+    file(_path, 'w').write('%s\n%s' % (_name, _pwd))
 else:
-    _f = file(_path)
-    _name, _pwd = _f.read().splitlines()
-_f.close()
+    _name, _pwd = file(_path).read().splitlines()
+
 
 # sqlalchemy 设置
 # dialect+driver://username:password@host:port/database?charset=encoding
