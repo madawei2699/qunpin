@@ -1,4 +1,5 @@
 *~
 *.pyc
 *.swp
+please_dont_commit_this_file
 __pycache--/

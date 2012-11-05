@@ -25,8 +25,11 @@ urls = [
 DEBUG = True
 
 
+# 应用目录
+app_root = os.path.dirname(__file__)
+
 # 在~目录（Windows下面也有这个目录，所以不用担心）下面建立一个文件
-_path = os.path.join(os.path.expanduser('~'), '.qunpin_db_config')
+_path = os.path.join(app_root, 'please_dont_commit_this_file')
 if not os.path.exists(_path):
     _name = raw_input("Please input your MySQL username: ")
     _pwd = raw_input("Please input your MySQL password: ")
@@ -47,7 +50,6 @@ db = scoped_session(sessionmaker(bind=engine))
 
 
 # 静态文件设置
-app_root = os.path.dirname(__file__)
 static_path = os.path.join(app_root, "static")
 template_path = os.path.join(app_root, "templates")
 
