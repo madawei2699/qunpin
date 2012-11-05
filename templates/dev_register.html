@@ -1,32 +1,26 @@
 {% extends 'dev_base.html'%}
 {% block title %}群品-注册{% endblock %}
 
-{% macro error_msg(name) -%}
-{% if form_error_message and form_error_message.get(name,'') %}
-<span>{{ form_error_message[name] }}</span>
-{% endif %}
-{%- endmacro %}
-
 {% block main %}
 <div>
   <form action="/register" method="post">
     <div>
       <input type="email" name="email" placeholder="邮箱" value="{{form.email}}"/>
-      {{ error_msg('email') }}
+      {{ macros.error_msg('email') }}
     </div>
     <div>
       <input type="text" name="username" placeholder="名字" value="{{form.username}}"/>
-      {{ error_msg('username') }}
+      {{ macros.error_msg('username') }}
     </div>
     <div>
       <input type="password" name="password_1" placeholder="密码" />
-      {{ error_msg('password_1') }}
+      {{ macros.error_msg('password_1') }}
     </div>
     <div>
       <input type="password" name="password_2" placeholder="密码确认" />
-      {{ error_msg('password_2') }}
+      {{ macros.error_msg('password_2') }}
     </div>
-    {{ error_msg('form') }}
+    {{ macros.error_msg('form') }}
     <div>
       {{ xsrf_form_html() }}
       <input type="submit" value="注册"/>

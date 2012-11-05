@@ -2,24 +2,18 @@
 
 {% block title %}群品-编辑章节{% endblock %}
 
-{% macro error_msg(name) -%}
-{% if form_error_message and form_error_message.get(name,'') %}
-<span>{{ form_error_message[name] }}</span>
-{% endif %}
-{%- endmacro %}
-
 {% block main %}
 <div>
     <form action="/book/edit_chapter/{{bid}}" method="post">
         <div>
             <input type="text" name="title" placeholder="章节名" value="{{form.title}}"/>
-            {{ error_msg('title') }}
+            {{ macros.error_msg('title') }}
         </div>
         <div>
             <textarea name="content">{{form.content}}</textarea> 
-            {{ error_msg('content') }}
+            {{ macros.error_msg('content') }}
         </div>
-        {{ error_msg('form') }}
+        {{ macros.error_msg('form') }}
         <input type="hidden" name="cid"  value="{{form.cid}}"/>
         {{ xsrf_form_html() }}
         <div>

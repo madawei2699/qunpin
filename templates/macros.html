@@ -1,0 +1,6 @@
+{# 错误提示对话框 #}
+{% macro error_msg(name) -%}
+    {% if form_error_message and form_error_message.get(name,'') %}
+        <span>{{ form_error_message[name] }}</span>
+    {% endif %}
+{%- endmacro %}

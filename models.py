@@ -2,7 +2,7 @@
 
 # buildin import
 from random import random
-from md5 import md5
+from hashlib import md5
 from datetime import datetime
 
 # third import
